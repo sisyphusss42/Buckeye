@@ -3,10 +3,10 @@ frontend:
   phases:
     preBuild:
       commands:
-        - cd pressplay-app && npm ci
+        - npm ci --prefix pressplay-app
     build:
       commands:
-        - cd pressplay-app && npm run build
+        - npm run build --prefix pressplay-app
   artifacts:
     baseDirectory: pressplay-app/dist
     files:
