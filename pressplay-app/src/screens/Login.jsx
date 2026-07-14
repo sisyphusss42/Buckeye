@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthContext'
 
 export default function Login() {
   const navigate = useNavigate()
-  const { signIn, signUp, confirmSignUp } = useAuth()
+  const { signIn, signUp, confirmSignUp, demoLogin } = useAuth()
   const [mode, setMode] = useState('login') // login | signup | confirm
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -117,7 +117,7 @@ export default function Login() {
         {/* Skip auth for demo */}
         <button
           className="btn btn-ghost mt-24"
-          onClick={() => navigate('/')}
+          onClick={() => { demoLogin(); navigate('/') }}
           style={{ fontSize: 13, color: 'var(--text-tertiary)' }}
         >
           跳過登入（Demo 模式）

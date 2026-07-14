@@ -1,108 +1,122 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserAttribute } from 'amazon-cognito-identity-js'
 import config from '../config'
+import { computeSecretHash } from './secretHash'
 
-const userPool = new CognitoUserPool({
-  UserPoolId: config.cognito.userPoolId,
-  ClientId: config.cognito.clientId,
-})
+const COGNITO_URL = `https://cognito-idp.${config.cognito.region}.amazonaws.com/`
+
+// Direct Cognito API call
+async function cognitoRequest(action, params) {
+  const res = await fetch(COGNITO_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': `AWSCognitoIdentityProviderService.${action}`,
+    },
+    body: JSON.stringify(params),
+  })
+  const data = await res.json()
+  if (!res.ok) {
+    throw new Error(data.message || data.__type || 'Cognito request failed')
+  }
+  return data
+}
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [tokens, setTokens] = useState(null)
 
-  // Check for existing session on mount
+  // Check localStorage for existing session
   useEffect(() => {
-    const cognitoUser = userPool.getCurrentUser()
-    if (cognitoUser) {
-      cognitoUser.getSession((err, session) => {
-        if (err) {
-          setLoading(false)
-          return
-        }
-        if (session.isValid()) {
-          setUser({
-            username: cognitoUser.getUsername(),
-            token: session.getIdToken().getJwtToken(),
-          })
-        }
-        setLoading(false)
-      })
-    } else {
-      setLoading(false)
+    const stored = localStorage.getItem('pressplay_auth')
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored)
+        setUser({ username: parsed.username, token: parsed.idToken })
+        setTokens(parsed)
+      } catch (e) { /* ignore */ }
     }
+    setLoading(false)
   }, [])
 
   // Sign up
-  const signUp = (email, password, displayName) => {
-    return new Promise((resolve, reject) => {
-      const attributes = [
-        new CognitoUserAttribute({ Name: 'email', Value: email }),
-      ]
-      if (displayName) {
-        attributes.push(new CognitoUserAttribute({ Name: 'nickname', Value: displayName }))
-      }
-      userPool.signUp(email, password, attributes, null, (err, result) => {
-        if (err) return reject(err)
-        resolve(result)
-      })
+  const signUp = async (email, password, displayName) => {
+    const hash = await computeSecretHash(email)
+    const params = {
+      ClientId: config.cognito.clientId,
+      SecretHash: hash,
+      Username: email,
+      Password: password,
+      UserAttributes: [
+        { Name: 'email', Value: email },
+      ],
+    }
+    if (displayName) {
+      params.UserAttributes.push({ Name: 'nickname', Value: displayName })
+    }
+    return await cognitoRequest('SignUp', params)
+  }
+
+  // Confirm sign up
+  const confirmSignUp = async (email, code) => {
+    const hash = await computeSecretHash(email)
+    return await cognitoRequest('ConfirmSignUp', {
+      ClientId: config.cognito.clientId,
+      SecretHash: hash,
+      Username: email,
+      ConfirmationCode: code,
     })
   }
 
-  // Confirm sign up (verification code)
-  const confirmSignUp = (email, code) => {
-    return new Promise((resolve, reject) => {
-      const cognitoUser = new CognitoUser({ Username: email, Pool: userPool })
-      cognitoUser.confirmRegistration(code, true, (err, result) => {
-        if (err) return reject(err)
-        resolve(result)
-      })
+  // Sign in (USER_PASSWORD_AUTH flow — simpler than SRP)
+  const signIn = async (email, password) => {
+    const hash = await computeSecretHash(email)
+    const data = await cognitoRequest('InitiateAuth', {
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      ClientId: config.cognito.clientId,
+      AuthParameters: {
+        USERNAME: email,
+        PASSWORD: password,
+        SECRET_HASH: hash,
+      },
     })
-  }
 
-  // Sign in
-  const signIn = (email, password) => {
-    return new Promise((resolve, reject) => {
-      const cognitoUser = new CognitoUser({ Username: email, Pool: userPool })
-      const authDetails = new AuthenticationDetails({ Username: email, Password: password })
-
-      cognitoUser.authenticateUser(authDetails, {
-        onSuccess: (session) => {
-          const userData = {
-            username: cognitoUser.getUsername(),
-            token: session.getIdToken().getJwtToken(),
-          }
-          setUser(userData)
-          resolve(userData)
-        },
-        onFailure: (err) => reject(err),
-      })
-    })
+    const result = data.AuthenticationResult
+    const authData = {
+      username: email,
+      idToken: result.IdToken,
+      accessToken: result.AccessToken,
+      refreshToken: result.RefreshToken,
+    }
+    localStorage.setItem('pressplay_auth', JSON.stringify(authData))
+    setUser({ username: email, token: result.IdToken })
+    setTokens(authData)
+    return authData
   }
 
   // Sign out
   const signOut = () => {
-    const cognitoUser = userPool.getCurrentUser()
-    if (cognitoUser) cognitoUser.signOut()
+    localStorage.removeItem('pressplay_auth')
     setUser(null)
+    setTokens(null)
   }
 
-  // Get current token (refreshes if needed)
+  // Demo mode
+  const demoLogin = () => {
+    setUser({ username: 'Ava', token: 'demo-token' })
+  }
+
+  // Get current token
   const getToken = () => {
-    return new Promise((resolve, reject) => {
-      const cognitoUser = userPool.getCurrentUser()
-      if (!cognitoUser) return reject(new Error('No user'))
-      cognitoUser.getSession((err, session) => {
-        if (err) return reject(err)
-        resolve(session.getIdToken().getJwtToken())
-      })
-    })
+    if (user?.token === 'demo-token') return Promise.resolve('demo-token')
+    if (tokens?.idToken) return Promise.resolve(tokens.idToken)
+    return Promise.reject(new Error('No token'))
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, confirmSignUp, signIn, signOut, getToken }}>
+    <AuthContext.Provider value={{ user, loading, signUp, confirmSignUp, signIn, signOut, demoLogin, getToken }}>
       {children}
     </AuthContext.Provider>
   )

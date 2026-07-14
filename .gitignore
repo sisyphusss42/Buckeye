@@ -1,24 +1,4 @@
-# Dependencies
-pressplay-app\node_modules
-
-# Build output
-pressplay-app\dist
-
-# Environment variables
+node_modules
+dist
 .env
 .env.local
-.env.*.local
-
-# Editor
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*

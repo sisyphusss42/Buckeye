@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './auth/AuthContext'
 import Splash from './screens/Splash'
 import Survey from './screens/Survey'
 import Home from './screens/Home'
@@ -15,25 +16,32 @@ import Leaderboard from './screens/Leaderboard'
 import Notifications from './screens/Notifications'
 import Login from './screens/Login'
 
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return null
+  if (!user) return <Navigate to="/splash" replace />
+  return children
+}
+
 export default function App() {
   return (
     <div className="app-container">
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/splash" element={<Splash />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/survey" element={<Survey />} />
-        <Route path="/video" element={<Video />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/garden" element={<Garden />} />
-        <Route path="/flower" element={<FlowerDetail />} />
-        <Route path="/review" element={<Review />} />
-        <Route path="/partners" element={<Partners />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/wrap" element={<Wrap />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/video" element={<ProtectedRoute><Video /></ProtectedRoute>} />
+        <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+        <Route path="/garden" element={<ProtectedRoute><Garden /></ProtectedRoute>} />
+        <Route path="/flower" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
+        <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
+        <Route path="/partners" element={<ProtectedRoute><Partners /></ProtectedRoute>} />
+        <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/wrap" element={<ProtectedRoute><Wrap /></ProtectedRoute>} />
+        <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
       </Routes>
     </div>
   )
