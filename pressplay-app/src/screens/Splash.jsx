@@ -8,8 +8,8 @@ export default function Splash() {
       <h1 style={{ fontSize: 32, fontWeight: 700, color: 'var(--green)', marginBottom: 4 }}>PressPlay</h1>
       <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Academy</h2>
       <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 48 }}>每一次學習，都讓花園多一分生機</p>
-      <button className="btn btn-primary" onClick={() => navigate('/survey')} style={{ marginBottom: 12 }}>開始種下第一朵花 🌱</button>
-      <button className="btn btn-ghost" onClick={() => navigate('/')}>我已經有帳號了</button>
+      <button className="btn btn-primary" onClick={() => navigate('/login')} style={{ marginBottom: 12 }}>開始種下第一朵花 🌱</button>
+      <button className="btn btn-ghost" onClick={() => navigate('/login')}>我已經有帳號了</button>
       <p style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 'auto' }}>v1.0 · 用學習灌溉你的知識花園</p>
     </div>
   )

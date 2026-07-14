@@ -13,12 +13,14 @@ import Profile from './screens/Profile'
 import Wrap from './screens/Wrap'
 import Leaderboard from './screens/Leaderboard'
 import Notifications from './screens/Notifications'
+import Login from './screens/Login'
 
 export default function App() {
   return (
     <div className="app-container">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/survey" element={<Survey />} />
         <Route path="/video" element={<Video />} />
