@@ -17,6 +17,9 @@ export function seedDemoData() {
     { videoId: 'atmo-2', title: '【觀念】地轉風與近地面風', courseId: 'atmosphere', completedAt: '2026-07-13T09:00:00.000Z' },
     { videoId: 'ocean-1', title: '【觀念】聖嬰與反聖嬰現象', courseId: 'ocean', completedAt: '2026-07-14T08:00:00.000Z' },
     { videoId: 'ocean-2', title: '【觀念】潮汐', courseId: 'ocean', completedAt: '2026-07-14T09:30:00.000Z' },
+    { videoId: 'es-1', title: 'Structure of the Earth', courseId: 'earth-science-khan', completedAt: '2026-07-14T10:00:00.000Z' },
+    { videoId: 'econ-1', title: 'Introduction to Economics', courseId: 'microeconomics', completedAt: '2026-07-14T11:00:00.000Z' },
+    { videoId: 'fin-1', title: '理財第 1 課：「想要」還是「必要」？', courseId: 'financial-literacy', completedAt: '2026-07-14T12:00:00.000Z' },
   ]
 
   // Varying flower states (different familiarity/petals/review schedules)
@@ -71,6 +74,21 @@ export function seedDemoData() {
       petals: 2, baseFamiliarity: 20, lastReviewAt: null,
       nextReviewAt: null,
       intervalDays: 1, easeFactor: 2.5, reviewCount: 0, totalCorrect: 0, totalAnswered: 0,
+    },
+    'es-1': {
+      petals: 5, baseFamiliarity: 50, lastReviewAt: '2026-07-14T10:30:00.000Z',
+      nextReviewAt: new Date(now.getTime() - 3 * 60 * 60 * 1000).toISOString(), // due now
+      intervalDays: 1, easeFactor: 2.3, reviewCount: 1, totalCorrect: 3, totalAnswered: 4,
+    },
+    'econ-1': {
+      petals: 7, baseFamiliarity: 75, lastReviewAt: '2026-07-14T14:00:00.000Z',
+      nextReviewAt: new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+      intervalDays: 5, easeFactor: 2.7, reviewCount: 3, totalCorrect: 8, totalAnswered: 9,
+    },
+    'fin-1': {
+      petals: 3, baseFamiliarity: 35, lastReviewAt: '2026-07-14T12:30:00.000Z',
+      nextReviewAt: new Date(now.getTime() - 1 * 60 * 60 * 1000).toISOString(), // due now
+      intervalDays: 1, easeFactor: 2.2, reviewCount: 1, totalCorrect: 2, totalAnswered: 3,
     },
   }
 
