@@ -36,12 +36,14 @@ function treeTarget(position, tree, index) {
     height="174"
     rx="24"
     fill="transparent"
+    stroke="none"
     pointer-events="all"
     cursor="pointer"
     tabindex="0"
     role="button"
     aria-label="查看${title}課程樹"
     data-tree-index="${index}"
+    style="outline:none"
   />`
 }
 

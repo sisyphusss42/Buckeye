@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import BottomNav from '../components/BottomNav'
 import courses from '../data/courses'
 import { buildForestSVG, FULL_GROWTH_TARGET } from '../forestScene'
@@ -14,6 +15,7 @@ const DEMO_CORRECT_ANSWERS = {
 
 export default function Forest() {
   const [selectedTree, setSelectedTree] = useState(null)
+  const navigate = useNavigate()
 
   const trees = CREATOR_COURSE_IDS
     .map(courseId => courses.find(course => course.id === courseId))
@@ -126,11 +128,10 @@ export default function Forest() {
             <button
               type="button"
               className="btn btn-primary"
-              disabled
-              aria-disabled="true"
-              style={{ width: '100%', opacity: 0.55, cursor: 'not-allowed' }}
+              onClick={() => navigate(`/forest-quiz/${selectedTree.id}`)}
+              style={{ width: '100%' }}
             >
-              延伸問題（即將開放）
+              延伸問題
             </button>
           </div>
         )}
