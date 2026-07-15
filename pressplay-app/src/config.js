@@ -7,7 +7,7 @@ const config = {
     clientSecret: '1brcb9um41k9731tav7avs2iv8ksvqsocqn2jvk5jcl6ajaj6s51',
   },
   api: {
-    baseUrl: 'YOUR_API_GATEWAY_URL',
+    baseUrl: 'https://3ubphbhau1.execute-api.us-east-1.amazonaws.com',
   },
 }
 

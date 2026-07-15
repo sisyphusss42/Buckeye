@@ -1,23 +1,92 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
+import config from '../config'
 
-const options = [
-  { text: '正中央', correct: false },
-  { text: '四條線的交叉點', correct: true },
-  { text: '最上緣', correct: false },
-  { text: '畫面角落', correct: false },
-]
+// Fallback quiz if API is not yet configured or fails
+const FALLBACK_QUIZ = {
+  questions: [{
+    question: '主體放在九宮格的哪個位置，畫面最自然？',
+    options: ['正中央', '四條線的交叉點', '最上緣', '畫面角落'],
+    correctIndex: 1,
+    explanation: '三分法則將畫面分成九宮格，主體放在交叉點上比置中更自然。',
+  }]
+}
 
 export default function Quiz() {
   const navigate = useNavigate()
+  const { getToken } = useAuth()
+  const [quiz, setQuiz] = useState(null)
+  const [currentQ, setCurrentQ] = useState(0)
   const [answered, setAnswered] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadQuiz()
+  }, [])
+
+  async function loadQuiz() {
+    // Skip API call if not configured yet
+    if (!config.api.baseUrl || config.api.baseUrl === 'YOUR_API_GATEWAY_URL') {
+      setQuiz(FALLBACK_QUIZ)
+      setLoading(false)
+      return
+    }
+
+    try {
+      const token = await getToken()
+      const res = await fetch(`${config.api.baseUrl}/quiz/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ topic: '攝影', numQuestions: 3 }),
+      })
+      const data = await res.json()
+      if (data.questions && data.questions.length > 0) {
+        setQuiz(data)
+      } else {
+        setQuiz(FALLBACK_QUIZ)
+      }
+    } catch (e) {
+      console.warn('Quiz API failed, using fallback:', e)
+      setQuiz(FALLBACK_QUIZ)
+    }
+    setLoading(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="screen" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1 }} />
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
+          <div className="quiz-card" style={{ textAlign: 'center', padding: 40 }}>
+            <span style={{ fontSize: 40 }}>🤖</span>
+            <p className="text-body mt-12">AI 正在出題...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const q = quiz.questions[currentQ]
+  const isCorrect = answered !== null && answered === q.correctIndex
+  const totalQ = quiz.questions.length
 
   const handleAnswer = (idx) => {
     if (answered !== null) return
     setAnswered(idx)
   }
 
-  const isCorrect = answered !== null && options[answered].correct
+  const handleNext = () => {
+    if (currentQ < totalQ - 1) {
+      setCurrentQ(currentQ + 1)
+      setAnswered(null)
+    } else {
+      navigate('/video')
+    }
+  }
 
   return (
     <div className="screen" style={{ position: 'relative' }}>
@@ -26,29 +95,34 @@ export default function Quiz() {
         <div className="quiz-card">
           <div style={{ textAlign: 'center', marginBottom: 16 }}>
             <span style={{ fontSize: 32 }}>🤖</span>
-            <h3 className="text-title" style={{ marginTop: 8 }}>AI 快速測驗 · 1/1</h3>
+            <h3 className="text-title" style={{ marginTop: 8 }}>AI 快速測驗 · {currentQ + 1}/{totalQ}</h3>
           </div>
-          <p style={{ fontSize: 15, fontWeight: 500, marginBottom: 16 }}>主體放在九宮格的哪個位置，畫面最自然？</p>
+          <p style={{ fontSize: 15, fontWeight: 500, marginBottom: 16 }}>{q.question}</p>
           <div>
-            {options.map((opt, i) => {
+            {q.options.map((opt, i) => {
               let cls = 'answer-option'
               if (answered !== null) {
-                if (opt.correct) cls += ' correct'
+                if (i === q.correctIndex) cls += ' correct'
                 else if (i === answered) cls += ' wrong'
               }
               return (
                 <div key={i} className={cls} onClick={() => handleAnswer(i)}>
-                  {opt.text}{answered !== null && opt.correct && ' ✓'}
+                  {opt}{answered !== null && i === q.correctIndex && ' ✓'}
                 </div>
               )
             })}
           </div>
           {answered !== null && (
             <div style={{ marginTop: 16, textAlign: 'center' }}>
-              <div style={{ background: 'var(--green-light)', borderRadius: 12, padding: 12, marginBottom: 16 }}>
-                {isCorrect ? '🌸 答對了！這朵花長出第 6 片花瓣' : '🍃 沒關係，再想想看'}
+              <div style={{ background: isCorrect ? 'var(--green-light)' : 'var(--yellow-light)', borderRadius: 12, padding: 12, marginBottom: 8 }}>
+                {isCorrect ? '🌸 答對了！這朵花長出新花瓣' : '🍃 沒關係，記住這個知識點'}
               </div>
-              <button className="btn btn-primary" onClick={() => navigate('/video')}>繼續學習</button>
+              {q.explanation && (
+                <p className="text-caption" style={{ marginBottom: 12 }}>{q.explanation}</p>
+              )}
+              <button className="btn btn-primary" onClick={handleNext}>
+                {currentQ < totalQ - 1 ? '下一題' : '繼續學習'}
+              </button>
             </div>
           )}
         </div>
