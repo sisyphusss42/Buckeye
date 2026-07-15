@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import config from '../config'
 import videos from '../data/videos'
+import { recordQuizResult } from '../data/spacedRepetition'
 
 // Fallback quiz if API fails
 const FALLBACK_QUIZ = {
@@ -22,6 +23,7 @@ export default function Quiz() {
   const [currentQ, setCurrentQ] = useState(0)
   const [answered, setAnswered] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [correctCount, setCorrectCount] = useState(0)
 
   const video = videos.find(v => v.id === videoId) || videos[0]
 
@@ -77,6 +79,9 @@ export default function Quiz() {
   const handleAnswer = (idx) => {
     if (answered !== null) return
     setAnswered(idx)
+    if (idx === quiz.questions[currentQ].correctIndex) {
+      setCorrectCount(c => c + 1)
+    }
   }
 
   const handleNext = () => {
@@ -84,7 +89,15 @@ export default function Quiz() {
       setCurrentQ(currentQ + 1)
       setAnswered(null)
     } else {
-      navigate(`/video/${video.id}`)
+      // Quiz finished — record result (recalculate correct since setState is async)
+      const finalCorrect = quiz.questions.reduce((acc, question, idx) => {
+        if (idx < currentQ) return acc // already counted in correctCount
+        if (idx === currentQ && answered === question.correctIndex) return acc + 1
+        return acc
+      }, correctCount)
+      recordQuizResult(video.id, correctCount, totalQ)
+      console.log(`📊 測驗完成: ${video.title} — ${correctCount}/${totalQ} 正確`)
+      navigate(`/flower/${video.id}`)
     }
   }
 

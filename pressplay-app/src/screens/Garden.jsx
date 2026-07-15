@@ -3,6 +3,7 @@ import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import { buildGardenSVG } from '../gardenScene'
 import videos from '../data/videos'
+import { getCurrentFamiliarity, getFlowerState } from '../data/spacedRepetition'
 
 export default function Garden() {
   const navigate = useNavigate()
@@ -12,10 +13,10 @@ export default function Garden() {
 
   // Build flower data from completed videos
   const flowers = completedVideos.map((cv, i) => {
-    const video = videos.find(v => v.id === cv.videoId)
+    const state = getFlowerState(cv.videoId)
     return {
-      title: video?.title || cv.videoId,
-      petals: 4, // starts with 4 petals, grows with quiz answers
+      title: videos.find(v => v.id === cv.videoId)?.title || cv.videoId,
+      petals: state.petals || 4,
       colorIndex: i,
     }
   })
@@ -47,11 +48,13 @@ export default function Garden() {
           <div className="flex gap-12 mt-16" style={{ overflowX: 'auto', paddingBottom: 4 }}>
             {completedVideos.map((cv, i) => {
               const video = videos.find(v => v.id === cv.videoId)
+              const { familiarity } = getCurrentFamiliarity(cv.videoId)
+              const state = getFlowerState(cv.videoId)
               return (
                 <div key={cv.videoId} className="card" style={{ minWidth: 100, textAlign: 'center', cursor: 'pointer' }} onClick={() => navigate(`/flower/${cv.videoId}`)}>
                   <div style={{ fontSize: 28 }}>🌸</div>
                   <div className="text-small mt-4">{video?.title || cv.videoId}</div>
-                  <div className="text-small" style={{ color: 'var(--green)' }}>4 片花瓣</div>
+                  <div className="text-small" style={{ color: familiarity >= 60 ? 'var(--green)' : 'var(--warning)' }}>{familiarity}% 熟悉</div>
                 </div>
               )
             })}
