@@ -64,10 +64,14 @@ export default function Video() {
           </div>
         )}
 
-        <div className="ai-bubble mt-16" style={{ cursor: 'pointer' }} onClick={() => navigate(`/quiz/${episode.id}`)}>
+        <div className="card mt-16" style={{ background: 'linear-gradient(135deg, var(--green-light), var(--blue-light))', cursor: 'pointer', padding: '12px 16px', borderRadius: 16, fontSize: 14, lineHeight: 1.6 }} onClick={() => navigate(`/quiz/${episode.id}`)}>
           想測驗一下對「{episode.title}」的理解嗎？
           <div style={{ marginTop: 8 }}><span className="btn btn-small btn-primary">開始測驗</span></div>
         </div>
+
+        <button className="btn btn-ghost mt-16" onClick={() => navigate(`/course/${episode.courseId}`)}>
+          ← 回到「{episode.courseTitle}」課程列表
+        </button>
       </div>
     </div>
   )

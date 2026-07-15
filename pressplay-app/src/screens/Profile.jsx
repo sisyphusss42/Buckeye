@@ -7,6 +7,9 @@ export default function Profile() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
 
+  const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
+  const flowerCount = completedVideos.length
+
   const handleLogout = () => {
     signOut()
     navigate('/splash')
@@ -21,12 +24,12 @@ export default function Profile() {
             {user?.username?.charAt(0)?.toUpperCase() || 'A'}
           </div>
           <h2 className="text-h2">{user?.username || 'Ava'}</h2>
-          <p className="text-caption">Lv.12 · 知識園丁 🌿</p>
-          <div className="progress-bar mt-8" style={{ maxWidth: 200, margin: '8px auto 0' }}><div className="fill purple" style={{ width: '65%' }} /></div>
-          <p className="text-small mt-4">距離 Lv.13 還差 350 XP</p>
+          <p className="text-caption">Lv.{Math.floor(flowerCount / 3) + 1} · 知識園丁 🌿</p>
+          <div className="progress-bar mt-8" style={{ maxWidth: 200, margin: '8px auto 0' }}><div className="fill purple" style={{ width: `${(flowerCount % 3) / 3 * 100}%` }} /></div>
+          <p className="text-small mt-4">再種 {3 - (flowerCount % 3)} 朵花即可升級</p>
         </div>
         <div className="stat-row mb-20">
-          <div className="stat-box"><div className="stat-value">28</div><div className="stat-label">花朵</div></div>
+          <div className="stat-box"><div className="stat-value">{flowerCount}</div><div className="stat-label">花朵</div></div>
           <div className="stat-box"><div className="stat-value">12</div><div className="stat-label">連續天數</div></div>
           <div className="stat-box"><div className="stat-value">9</div><div className="stat-label">徽章</div></div>
         </div>
