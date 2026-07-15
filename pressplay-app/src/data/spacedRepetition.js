@@ -141,3 +141,34 @@ export function getNextReviewText(videoId) {
   const diffDays = Math.round(diffHours / 24)
   return `${diffDays} 天後`
 }
+
+/**
+ * Get list of video IDs that are due for review (next review time <= now).
+ * Also includes completed videos that have never been reviewed.
+ */
+export function getDueReviews() {
+  const states = getFlowerStates()
+  const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
+  const now = new Date()
+  const due = []
+  const seen = new Set()
+
+  // Check flowerState entries
+  for (const [videoId, state] of Object.entries(states)) {
+    seen.add(videoId)
+    if (!state.nextReviewAt) {
+      due.push(videoId)
+    } else if (new Date(state.nextReviewAt) <= now) {
+      due.push(videoId)
+    }
+  }
+
+  // Also include completed videos that have no flowerState entry yet (never quizzed)
+  for (const cv of completedVideos) {
+    if (!seen.has(cv.videoId)) {
+      due.push(cv.videoId)
+    }
+  }
+
+  return due
+}

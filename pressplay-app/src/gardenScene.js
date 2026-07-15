@@ -127,9 +127,9 @@ export function getPlotPositions() {
 /**
  * Build the garden SVG.
  * @param {Array} flowers — array of { title, petals, colorIndex } for each completed video
- *   If empty, shows an empty garden with a "plant your first flower" message.
+ * @param {Array} assignedPlots — optional array of {x, y} positions for each flower (if not provided, uses sequential order)
  */
-export function buildGardenSVG(flowers = []) {
+export function buildGardenSVG(flowers = [], assignedPlots = null) {
   const W = 390, H = 680;
   let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block">`;
 
@@ -179,8 +179,8 @@ export function buildGardenSVG(flowers = []) {
 
   // Plant flowers in occupied plots
   flowers.forEach((flower, i) => {
-    if (i < plots.length) {
-      const plot = plots[i];
+    const plot = assignedPlots ? assignedPlots[i] : plots[i]
+    if (plot) {
       s += plantedFlowerG(plot.x, plot.y - 3, flower.petals, 0.7, false, flower.colorIndex);
     }
   });
