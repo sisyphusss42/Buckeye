@@ -70,6 +70,17 @@ export function buildForestSVG(trees = []) {
   svg += `<path d="M0 180 Q120 135 245 170 T390 155 V225 H0Z" fill="#9ED287"/>`
   svg += `<rect x="0" y="185" width="${SCENE_WIDTH}" height="${SCENE_HEIGHT - 185}" fill="url(#gGrass)"/>`
 
+  // Decorative grasses (rendered before trees so they sit behind)
+  const tuft = (x, y, scale) => `<g stroke="#4E9558" stroke-width="${2.4 * scale}" stroke-linecap="round" fill="none"><path d="M${x} ${y}q-3 -${9 * scale} -6 -${13 * scale}"/><path d="M${x} ${y}q0 -${11 * scale} 0 -${15 * scale}"/><path d="M${x} ${y}q3 -${9 * scale} 6 -${13 * scale}"/></g>`
+  svg += tuft(15, 220, 0.7) + tuft(375, 230, 0.6) + tuft(50, 280, 0.8) + tuft(340, 270, 0.7)
+  svg += tuft(170, 250, 0.6) + tuft(220, 290, 0.7) + tuft(195, 380, 0.8)
+  svg += tuft(20, 350, 0.9) + tuft(370, 340, 0.8) + tuft(45, 420, 0.7) + tuft(355, 430, 0.8)
+  svg += tuft(150, 440, 0.7) + tuft(240, 410, 0.6) + tuft(195, 510, 0.7)
+  svg += tuft(15, 500, 0.9) + tuft(375, 490, 0.7) + tuft(30, 560, 0.8) + tuft(365, 570, 0.9)
+  svg += tuft(160, 560, 0.8) + tuft(230, 580, 0.7) + tuft(185, 630, 0.8)
+  svg += tuft(20, 655, 1.1) + tuft(120, 665, 0.9) + tuft(280, 658, 1) + tuft(370, 650, 0.8)
+  svg += tuft(55, 620, 0.7) + tuft(320, 610, 0.8) + tuft(180, 670, 0.9) + tuft(240, 660, 0.7)
+
   svg += `<g font-family="'Noto Sans TC', sans-serif" fill="#33523A">`
   svg += `<text x="34" y="42" font-size="22" font-weight="700">均一創作者森林</text>`
   svg += `<text x="34" y="66" font-size="12" opacity="0.78">每一次答對，都讓創作者的知識之樹成長</text>`
@@ -98,8 +109,6 @@ export function buildForestSVG(trees = []) {
     svg += `</g>`
   })
 
-  const tuft = (x, y, scale) => `<g stroke="#4E9558" stroke-width="${2.4 * scale}" stroke-linecap="round" fill="none"><path d="M${x} ${y}q-3 -${9 * scale} -6 -${13 * scale}"/><path d="M${x} ${y}q0 -${11 * scale} 0 -${15 * scale}"/><path d="M${x} ${y}q3 -${9 * scale} 6 -${13 * scale}"/></g>`
-  svg += tuft(20, 655, 1.1) + tuft(120, 665, 0.9) + tuft(280, 658, 1) + tuft(370, 650, 0.8)
   svg += `</svg>`
 
   return svg

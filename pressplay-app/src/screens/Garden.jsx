@@ -62,7 +62,7 @@ export default function Garden() {
           dangerouslySetInnerHTML={{ __html: gardenHTML }}
         />
         {/* Review reminder banner */}
-        {dueReviews.length > 0 && (
+        {dueReviews.length > 0 ? (
           <div
             onClick={() => navigate('/review-session')}
             style={{
@@ -86,6 +86,28 @@ export default function Garden() {
               <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>點擊開始今日複習</div>
             </div>
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green)', background: 'var(--green-light)', padding: '6px 12px', borderRadius: 20 }}>複習</span>
+          </div>
+        ) : (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 12,
+              left: 16,
+              right: 16,
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: 16,
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+            }}
+          >
+            <span style={{ fontSize: 24 }}>✅</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, fontSize: 14 }}>今天的花都澆好水了！</div>
+              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>繼續保持 🌸</div>
+            </div>
           </div>
         )}
       </div>

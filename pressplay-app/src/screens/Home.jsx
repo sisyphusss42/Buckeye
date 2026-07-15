@@ -67,16 +67,6 @@ export default function Home() {
           )
         })}
 
-        {/* Review Reminder */}
-        {completedCount > 0 && (
-          <div className="card mt-12" style={{ background: 'var(--yellow-light)', cursor: 'pointer' }} onClick={() => navigate('/garden')}>
-            <div className="flex items-center gap-12">
-              <span style={{ fontSize: 28 }}>🧠</span>
-              <div className="flex-1"><div style={{ fontWeight: 600 }}>{completedCount} 個知識點待複習</div><div className="text-caption">去花園看看哪些花需要澆水</div></div>
-              <span className="btn btn-small btn-primary">花園</span>
-            </div>
-          </div>
-        )}
       </div>
       <BottomNav />
     </div>
