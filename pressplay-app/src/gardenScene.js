@@ -74,6 +74,16 @@ function plantedFlowerG(cx, baseY, petals, s, wilted, idx) {
     return g;
   }
 
+  // Sprout stage: petals <= 2 (just planted, hasn't bloomed yet)
+  if (petals <= 2) {
+    const h = 18 * s;
+    g += `<path d="M${cx} ${baseY} C ${cx} ${baseY - h * 0.5} ${cx} ${baseY - h * 0.8} ${cx} ${baseY - h}" stroke="#6DBE6F" stroke-width="${3 * s}" stroke-linecap="round" fill="none"/>`;
+    g += `<ellipse cx="${cx - 7 * s}" cy="${baseY - h * 0.75}" rx="${7 * s}" ry="${4 * s}" fill="url(#gLeaf)" transform="rotate(-28 ${cx - 7 * s} ${baseY - h * 0.75})"/>`;
+    g += `<ellipse cx="${cx + 7 * s}" cy="${baseY - h}" rx="${7 * s}" ry="${4 * s}" fill="url(#gLeaf)" transform="rotate(28 ${cx + 7 * s} ${baseY - h})"/>`;
+    g += '</g>';
+    return g;
+  }
+
   const color = PETAL_COLORS[idx % PETAL_COLORS.length];
   g += `<path d="M${cx} ${baseY} Q ${cx - 3 * s} ${baseY - 16 * s} ${cx} ${headY + 6 * s}" stroke="#5FAF6A" stroke-width="${3.4 * s}" fill="none" stroke-linecap="round"/>`;
   g += `<ellipse cx="${cx - 8 * s}" cy="${baseY - 14 * s}" rx="${7 * s}" ry="${3.6 * s}" fill="url(#gLeaf)" transform="rotate(-30 ${cx - 8 * s} ${baseY - 14 * s})"/>`;
@@ -97,13 +107,30 @@ function flowerLabel(cx, baseY, text, s) {
   return `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="${9 * s}" font-family="'Noto Sans TC', sans-serif" fill="#5E3C22" opacity="0.85">${text}</text>`;
 }
 
+// Plot positions — exported so Garden.jsx can overlay click targets
+const PLOT_POSITIONS = [
+  {x:45,y:220},{x:120,y:215},{x:195,y:222},{x:270,y:218},{x:345,y:224},
+  {x:30,y:265},{x:85,y:270},{x:155,y:262},{x:225,y:268},{x:295,y:264},{x:365,y:270},
+  {x:50,y:310},{x:115,y:315},{x:180,y:308},{x:250,y:312},{x:320,y:306},{x:375,y:314},
+  {x:35,y:355},{x:95,y:360},{x:165,y:352},{x:235,y:358},{x:305,y:354},{x:370,y:360},
+  {x:55,y:400},{x:125,y:395},{x:195,y:402},{x:265,y:398},{x:340,y:404},
+  {x:30,y:445},{x:90,y:450},{x:160,y:442},{x:230,y:448},{x:300,y:444},{x:365,y:450},
+  {x:50,y:490},{x:120,y:495},{x:190,y:488},{x:260,y:494},{x:335,y:490},
+  {x:35,y:535},{x:100,y:540},{x:170,y:532},{x:240,y:538},{x:310,y:534},{x:375,y:540},
+  {x:55,y:580},{x:130,y:575},{x:205,y:582},{x:295,y:578},{x:360,y:584},
+];
+
+export function getPlotPositions() {
+  return PLOT_POSITIONS;
+}
+
 /**
  * Build the garden SVG.
  * @param {Array} flowers — array of { title, petals, colorIndex } for each completed video
  *   If empty, shows an empty garden with a "plant your first flower" message.
  */
 export function buildGardenSVG(flowers = []) {
-  const W = 390, H = 420;
+  const W = 390, H = 680;
   let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block">`;
 
   // Defs
@@ -118,22 +145,22 @@ export function buildGardenSVG(flowers = []) {
   </defs>`;
 
   // Sky + sun + clouds
-  s += `<rect x="0" y="0" width="${W}" height="200" fill="url(#gSky)"/>`;
-  s += `<circle cx="322" cy="52" r="46" fill="#FFE9A8" opacity="0.35"/><circle cx="322" cy="52" r="30" fill="url(#gSun)"/>`;
+  s += `<rect x="0" y="0" width="${W}" height="150" fill="url(#gSky)"/>`;
+  s += `<circle cx="322" cy="40" r="40" fill="#FFE9A8" opacity="0.35"/><circle cx="322" cy="40" r="26" fill="url(#gSun)"/>`;
 
   const cloud = (x, y, k) =>
     `<g fill="#ffffff" opacity="0.9"><circle cx="${x}" cy="${y}" r="${13 * k}"/><circle cx="${x + 16 * k}" cy="${y + 3 * k}" r="${16 * k}"/><circle cx="${x + 34 * k}" cy="${y}" r="${12 * k}"/><rect x="${x - 4 * k}" y="${y}" width="${44 * k}" height="${14 * k}" rx="${7 * k}"/></g>`;
-  s += cloud(60, 58, 1) + cloud(190, 38, 0.8);
+  s += cloud(60, 40, 0.9) + cloud(190, 28, 0.7) + cloud(300, 50, 0.6);
 
   // Rolling hills
-  s += `<path d="M0 180 Q 90 140 190 170 T 390 155 V 210 H0 Z" fill="#BFE5A6"/>`;
-  s += `<path d="M0 195 Q 120 160 240 190 T 390 180 V 230 H0 Z" fill="#A7DB92"/>`;
+  s += `<path d="M0 130 Q 90 100 190 125 T 390 110 V 170 H0 Z" fill="#BFE5A6"/>`;
+  s += `<path d="M0 150 Q 120 120 240 145 T 390 135 V 190 H0 Z" fill="#A7DB92"/>`;
 
   // Grass ground
-  s += `<rect x="0" y="185" width="${W}" height="${H - 185}" fill="url(#gGrass)"/>`;
+  s += `<rect x="0" y="140" width="${W}" height="${H - 140}" fill="url(#gGrass)"/>`;
 
   // Picket fence
-  const fenceTop = 218, fenceBot = 255, railY1 = 228, railY2 = 245;
+  const fenceTop = 168, fenceBot = 200, railY1 = 176, railY2 = 190;
   s += `<rect x="0" y="${railY1}" width="${W}" height="5" rx="2.5" fill="#F2E4CC"/>`;
   s += `<rect x="0" y="${railY2}" width="${W}" height="5" rx="2.5" fill="#EAD9BA"/>`;
   for (let x = 6; x < W; x += 34) {
@@ -141,36 +168,31 @@ export function buildGardenSVG(flowers = []) {
   }
   s += `<rect x="0" y="${railY1}" width="${W}" height="4" rx="2" fill="#fff" opacity="0.55"/>`;
 
-  // Soil planting bed
-  const bedY = 340, bedH = 50, bedX = 30, bedW = 330;
-  s += `<rect x="${bedX}" y="${bedY - bedH}" width="${bedW}" height="${bedH + 60}" rx="${bedH * 0.6}" fill="url(#gSoil)"/>`;
-  s += `<rect x="${bedX + 4}" y="${bedY - bedH}" width="${bedW - 8}" height="10" rx="5" fill="#C99361" opacity="0.7"/>`;
+  // Generate fixed plot positions scattered across grassland
+  const plots = PLOT_POSITIONS;
 
-  // Soil dots
-  for (let i = 0; i < 20; i++) {
-    const dx = bedX + 10 + Math.random() * (bedW - 20);
-    const dy = bedY - bedH + 8 + Math.random() * (bedH + 30);
-    s += `<circle cx="${dx.toFixed(0)}" cy="${dy.toFixed(0)}" r="${(1 + Math.random() * 1.5).toFixed(1)}" fill="#5E3C22" opacity="0.3"/>`;
-  }
+  // Draw all plots as small soil ovals
+  plots.forEach((plot) => {
+    s += `<ellipse cx="${plot.x}" cy="${plot.y}" rx="16" ry="7" fill="#8B6B4A" opacity="0.3"/>`;
+    s += `<ellipse cx="${plot.x}" cy="${plot.y - 1}" rx="14" ry="6" fill="#A0784C" opacity="0.2"/>`;
+  });
+
+  // Plant flowers in occupied plots
+  flowers.forEach((flower, i) => {
+    if (i < plots.length) {
+      const plot = plots[i];
+      s += plantedFlowerG(plot.x, plot.y - 3, flower.petals, 0.7, false, flower.colorIndex);
+    }
+  });
 
   if (flowers.length === 0) {
-    // Empty garden message
-    s += `<text x="${W / 2}" y="${bedY - 10}" text-anchor="middle" font-size="14" font-family="'Noto Sans TC', sans-serif" fill="#8A5E38">🌱 完成課程來種下你的第一朵花</text>`;
-  } else {
-    // Plant user's flowers evenly spaced in the bed
-    const n = flowers.length;
-    const scale = n <= 2 ? 1.3 : n <= 4 ? 1.1 : 0.9;
-    flowers.forEach((flower, i) => {
-      const cx = bedX + bedW * ((i + 0.5) / n);
-      const baseY = bedY - bedH + 12;
-      s += plantedFlowerG(cx, baseY, flower.petals, scale, false, flower.colorIndex);
-    });
+    s += `<text x="${W / 2}" y="420" text-anchor="middle" font-size="14" font-family="'Noto Sans TC', sans-serif" fill="#5E3C22" opacity="0.7">🌱 完成課程來種下你的第一朵花</text>`;
   }
 
   // Foreground grass tufts
   const tuft = (x, y, k) =>
     `<g stroke="#4E9558" stroke-width="${2.4 * k}" stroke-linecap="round" fill="none"><path d="M${x} ${y} q -3 -${9 * k} -6 -${13 * k}"/><path d="M${x} ${y} q 0 -${11 * k} 0 -${15 * k}"/><path d="M${x} ${y} q 3 -${9 * k} 6 -${13 * k}"/></g>`;
-  s += tuft(20, 410, 1.0) + tuft(130, 412, 0.9) + tuft(300, 410, 1.0) + tuft(370, 408, 0.8);
+  s += tuft(20, 650, 1.1) + tuft(130, 655, 0.9) + tuft(260, 652, 1.0) + tuft(370, 648, 0.8);
 
   s += `</svg>`;
   return s;

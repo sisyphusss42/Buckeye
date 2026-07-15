@@ -27,8 +27,8 @@ export function getFlowerState(videoId) {
 
 function createDefaultState() {
   return {
-    petals: 4,
-    baseFamiliarity: 40, // base familiarity from quiz scores (0-100)
+    petals: 2,
+    baseFamiliarity: 20, // base familiarity from quiz scores (0-100)
     lastReviewAt: null,
     nextReviewAt: null,
     intervalDays: 1,
@@ -63,8 +63,8 @@ export function recordQuizResult(videoId, correct, total) {
     state.baseFamiliarity * 0.6 + newFamiliarity * 0.4
   ))
 
-  // Update petals (4-10 based on familiarity)
-  state.petals = Math.max(4, Math.min(10, Math.round(4 + (state.baseFamiliarity / 100) * 6)))
+  // Update petals (2-10 based on familiarity)
+  state.petals = Math.max(2, Math.min(10, Math.round(2 + (state.baseFamiliarity / 100) * 8)))
 
   // SM-2 interval calculation
   if (quality >= 3) {
@@ -102,7 +102,7 @@ export function getCurrentFamiliarity(videoId) {
   const state = getFlowerState(videoId)
 
   if (!state.lastReviewAt) {
-    return { familiarity: 40, state } // Default for just-watched videos
+    return { familiarity: 20, state } // Default for just-watched videos
   }
 
   const now = new Date()
