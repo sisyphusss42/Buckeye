@@ -2,6 +2,12 @@
 // Now accepts a list of flowers to plant based on user's completed videos
 
 const PETAL_COLORS = ['#F08DAA', '#F6C453', '#6FA8FF', '#B38AF5', '#7BC98A'];
+const FLOWER_TARGET_CENTER_Y_OFFSET = -16;
+const FLOWER_TARGET_RADIUS = 24;
+
+function flowerTargetG(plot, flowerIndex) {
+  return `<circle cx="${plot.x}" cy="${plot.y + FLOWER_TARGET_CENTER_Y_OFFSET}" r="${FLOWER_TARGET_RADIUS}" fill="transparent" pointer-events="all" cursor="pointer" data-flower-index="${flowerIndex}"/>`;
+}
 
 function shadow(cx, cy, rx) {
   return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx * 0.28}" fill="#3E5C36" opacity="0.14"/>`;
@@ -179,9 +185,12 @@ export function buildGardenSVG(flowers = [], assignedPlots = null) {
 
   // Plant flowers in occupied plots
   flowers.forEach((flower, i) => {
-    const plot = assignedPlots ? assignedPlots[i] : plots[i]
+    const plot = assignedPlots ? assignedPlots[i] : plots[i];
     if (plot) {
+      s += '<g>';
       s += plantedFlowerG(plot.x, plot.y - 3, flower.petals, 0.7, false, flower.colorIndex);
+      s += flowerTargetG(plot, i);
+      s += '</g>';
     }
   });
 

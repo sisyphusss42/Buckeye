@@ -40,36 +40,27 @@ export default function Garden() {
   const gardenHTML = buildGardenSVG(flowers, assignedPlots)
   const dueReviews = getDueReviews()
 
-  const W = 390, H = 680
+  const handleGardenClick = (event) => {
+    const target = event.target.closest?.('[data-flower-index]')
+    if (!target) return
+
+    const rawIndex = target.getAttribute('data-flower-index')
+    if (!/^(0|[1-9]\d*)$/.test(rawIndex ?? '')) return
+
+    const index = Number(rawIndex)
+    if (!Number.isSafeInteger(index) || index >= flowers.length) return
+
+    navigate(`/flower/${flowers[index].id}`)
+  }
 
   return (
     <div className="screen">
       <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
         <div
+          onClick={handleGardenClick}
           style={{ width: '100%', height: '100%' }}
           dangerouslySetInnerHTML={{ __html: gardenHTML }}
         />
-        {/* Clickable hotspots over each planted flower */}
-        {flowers.map((flower, i) => {
-          if (!assignedPlots[i]) return null
-          const plot = assignedPlots[i]
-          return (
-            <div
-              key={flower.id}
-              onClick={() => navigate(`/flower/${flower.id}`)}
-              style={{
-                position: 'absolute',
-                left: `${(plot.x / W) * 100}%`,
-                top: `${((plot.y - 5) / H) * 100}%`,
-                width: 38,
-                height: 38,
-                transform: 'translate(-50%, -50%)',
-                cursor: 'pointer',
-                borderRadius: '50%',
-              }}
-            />
-          )
-        })}
         {/* Review reminder banner */}
         {dueReviews.length > 0 && (
           <div
