@@ -3,7 +3,7 @@
  * Call this once on app startup.
  */
 export function seedDemoData() {
-  if (localStorage.getItem('demoSeeded')) return
+  if (localStorage.getItem('demoSeeded') === 'v2') return
 
   const now = new Date()
 
@@ -217,5 +217,5 @@ export function seedDemoData() {
 
   localStorage.setItem('completedVideos', JSON.stringify(completedVideos))
   localStorage.setItem('flowerState', JSON.stringify(flowerState))
-  localStorage.setItem('demoSeeded', 'true')
+  localStorage.setItem('demoSeeded', 'v2')
 }
