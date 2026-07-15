@@ -105,7 +105,7 @@ export function AuthProvider({ children }) {
 
   // Demo mode
   const demoLogin = () => {
-    setUser({ username: 'Ava', token: 'demo-token' })
+    setUser({ username: '小明', token: 'demo-token' })
   }
 
   // Get current token

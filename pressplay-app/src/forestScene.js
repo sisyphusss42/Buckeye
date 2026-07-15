@@ -52,7 +52,7 @@ function treeTarget(position, tree, index) {
  * @param {Array} trees - array of { title, icon, color, correctAnswers }
  */
 export function buildForestSVG(trees = []) {
-  let svg = `<svg viewBox="0 0 ${SCENE_WIDTH} ${SCENE_HEIGHT}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block">`
+  let svg = `<svg viewBox="0 0 ${SCENE_WIDTH} ${SCENE_HEIGHT}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block">`
 
   svg += `<defs>
     <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8EEFF"/><stop offset="1" stop-color="#F4FAE9"/></linearGradient>
@@ -71,12 +71,9 @@ export function buildForestSVG(trees = []) {
   svg += `<rect x="0" y="185" width="${SCENE_WIDTH}" height="${SCENE_HEIGHT - 185}" fill="url(#gGrass)"/>`
 
   svg += `<g font-family="'Noto Sans TC', sans-serif" fill="#33523A">`
-  svg += `<text x="24" y="42" font-size="22" font-weight="700">均一創作者森林</text>`
-  svg += `<text x="24" y="66" font-size="12" opacity="0.78">每一次答對，都讓創作者的知識之樹成長</text>`
+  svg += `<text x="34" y="42" font-size="22" font-weight="700">均一創作者森林</text>`
+  svg += `<text x="34" y="66" font-size="12" opacity="0.78">每一次答對，都讓創作者的知識之樹成長</text>`
   svg += `</g>`
-
-  svg += `<path d="M195 205 C158 288 240 378 195 455 C165 510 191 602 195 680" stroke="#E9D8AF" stroke-width="58" fill="none" opacity="0.9"/>`
-  svg += `<path d="M195 205 C158 288 240 378 195 455 C165 510 191 602 195 680" stroke="#F6EACC" stroke-width="46" fill="none" opacity="0.95"/>`
 
   trees.slice(0, TREE_POSITIONS.length).forEach((tree, index) => {
     const position = TREE_POSITIONS[index]

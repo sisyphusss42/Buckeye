@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import { findEpisode } from '../data/courses'
 import { getCurrentFamiliarity, getNextReviewText } from '../data/spacedRepetition'
+import { buildSingleFlowerSVG } from '../gardenScene'
 
 export default function FlowerDetail() {
   const navigate = useNavigate()
@@ -12,7 +13,13 @@ export default function FlowerDetail() {
   const courseTitle = episode?.courseTitle || ''
   const { familiarity, state } = getCurrentFamiliarity(videoId)
   const nextReview = getNextReviewText(videoId)
-  const petals = state.petals || 4
+  const petals = state.petals || 2
+
+  // Determine color index based on position in completed videos
+  const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
+  const colorIndex = completedVideos.findIndex(cv => cv.videoId === videoId)
+
+  const flowerSVG = buildSingleFlowerSVG(petals, colorIndex >= 0 ? colorIndex : 0, 140)
 
   const getStage = () => {
     if (familiarity >= 90) return 3
@@ -29,9 +36,9 @@ export default function FlowerDetail() {
       <div className="header-bar"><div className="back-btn" onClick={() => navigate('/garden')}>‹</div><div/></div>
       <div className="screen-content" style={{ textAlign: 'center' }}>
         <div style={{ position: 'relative', margin: '16px 0 24px' }}>
-          <div style={{ fontSize: 80 }}>🌸</div>
-          <div style={{ position: 'absolute', top: 0, left: '30%', fontSize: 16 }}>✨</div>
-          <div style={{ position: 'absolute', top: 10, right: '30%', fontSize: 14 }}>✨</div>
+          <div dangerouslySetInnerHTML={{ __html: flowerSVG }} />
+          <div style={{ position: 'absolute', top: 0, left: '25%', fontSize: 16 }}>✨</div>
+          <div style={{ position: 'absolute', top: 10, right: '25%', fontSize: 14 }}>✨</div>
         </div>
         <div className="text-caption" style={{ color: 'var(--green)' }}>{courseTitle} · {stage >= 2 ? '已掌握' : '學習中'}</div>
         <h2 className="text-h2" style={{ margin: '4px 0' }}>{title}</h2>

@@ -65,7 +65,7 @@ export function treeG(cx, baseY, s, kind) {
   return g;
 }
 
-function plantedFlowerG(cx, baseY, petals, s, wilted, idx) {
+export function plantedFlowerG(cx, baseY, petals, s, wilted, idx) {
   let g = '<g>';
   g += shadow(cx, baseY + 1, 12 * s);
   const headY = baseY - 30 * s;
@@ -124,10 +124,32 @@ const PLOT_POSITIONS = [
   {x:50,y:490},{x:120,y:495},{x:190,y:488},{x:260,y:494},{x:335,y:490},
   {x:35,y:535},{x:100,y:540},{x:170,y:532},{x:240,y:538},{x:310,y:534},{x:375,y:540},
   {x:55,y:580},{x:130,y:575},{x:205,y:582},{x:295,y:578},{x:360,y:584},
+  {x:40,y:630},{x:115,y:635},{x:195,y:628},{x:275,y:632},{x:355,y:630},
 ];
 
 export function getPlotPositions() {
   return PLOT_POSITIONS;
+}
+
+/**
+ * Build a standalone SVG of a single flower for display (e.g. FlowerDetail page).
+ * @param {number} petals - number of petals (2 = sprout, 3-10 = flower)
+ * @param {number} colorIndex - index into PETAL_COLORS
+ * @param {number} size - SVG width/height
+ */
+export function buildSingleFlowerSVG(petals, colorIndex, size = 120) {
+  const cx = size / 2;
+  const baseY = size * 0.82;
+  const scale = size / 90;
+  let svg = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">`;
+  svg += `<defs>
+    <radialGradient id="gLeafDetail" cx="0.4" cy="0.35" r="0.8"><stop offset="0" stop-color="#8FD693"/><stop offset="1" stop-color="#4E9558"/></radialGradient>
+  </defs>`;
+  svg += plantedFlowerG(cx, baseY, petals, scale, false, colorIndex);
+  svg += `</svg>`;
+  // Replace url(#gLeaf) with the local gradient id
+  svg = svg.replaceAll('url(#gLeaf)', 'url(#gLeafDetail)');
+  return svg;
 }
 
 /**
@@ -197,11 +219,6 @@ export function buildGardenSVG(flowers = [], assignedPlots = null) {
   if (flowers.length === 0) {
     s += `<text x="${W / 2}" y="420" text-anchor="middle" font-size="14" font-family="'Noto Sans TC', sans-serif" fill="#5E3C22" opacity="0.7">🌱 完成課程來種下你的第一朵花</text>`;
   }
-
-  // Foreground grass tufts
-  const tuft = (x, y, k) =>
-    `<g stroke="#4E9558" stroke-width="${2.4 * k}" stroke-linecap="round" fill="none"><path d="M${x} ${y} q -3 -${9 * k} -6 -${13 * k}"/><path d="M${x} ${y} q 0 -${11 * k} 0 -${15 * k}"/><path d="M${x} ${y} q 3 -${9 * k} 6 -${13 * k}"/></g>`;
-  s += tuft(20, 650, 1.1) + tuft(130, 655, 0.9) + tuft(260, 652, 1.0) + tuft(370, 648, 0.8);
 
   s += `</svg>`;
   return s;

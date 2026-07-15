@@ -12,8 +12,7 @@ import ForestQuiz from './screens/ForestQuiz'
 import FlowerDetail from './screens/FlowerDetail'
 import Review from './screens/Review'
 import ReviewSession from './screens/ReviewSession'
-import Partners from './screens/Partners'
-import Chat from './screens/Chat'
+
 import Profile from './screens/Profile'
 import Wrap from './screens/Wrap'
 import Leaderboard from './screens/Leaderboard'
@@ -44,8 +43,7 @@ export default function App() {
         <Route path="/flower/:videoId" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
         <Route path="/review-session" element={<ProtectedRoute><ReviewSession /></ProtectedRoute>} />
-        <Route path="/partners" element={<ProtectedRoute><Partners /></ProtectedRoute>} />
-        <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/wrap" element={<ProtectedRoute><Wrap /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />

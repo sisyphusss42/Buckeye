@@ -21,9 +21,9 @@ export default function Profile() {
       <div className="screen-content">
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div className="avatar green" style={{ width: 72, height: 72, fontSize: 28, margin: '0 auto 12px' }}>
-            {user?.username?.charAt(0)?.toUpperCase() || 'A'}
+            {user?.username?.charAt(0)?.toUpperCase() || '明'}
           </div>
-          <h2 className="text-h2">{user?.username || 'Ava'}</h2>
+          <h2 className="text-h2">{user?.username || '小明'}</h2>
           <p className="text-caption">Lv.{Math.floor(flowerCount / 3) + 1} · 知識園丁 🌿</p>
           <div className="progress-bar mt-8" style={{ maxWidth: 200, margin: '8px auto 0' }}><div className="fill purple" style={{ width: `${(flowerCount % 3) / 3 * 100}%` }} /></div>
           <p className="text-small mt-4">再種 {3 - (flowerCount % 3)} 朵花即可升級</p>
@@ -42,9 +42,7 @@ export default function Profile() {
         </div>
         <div className="flex flex-col gap-4">
           <div className="card flex items-center justify-between" style={{ cursor: 'pointer' }} onClick={() => navigate('/wrap')}><span>📊 學習回顧</span><span>›</span></div>
-          <div className="card flex items-center justify-between" style={{ cursor: 'pointer' }}><span>📚 課程紀錄</span><span>›</span></div>
-          <div className="card flex items-center justify-between" style={{ cursor: 'pointer' }} onClick={() => navigate('/notifications')}><span>🔔 通知設定</span></div>
-          <div className="card flex items-center justify-between" style={{ cursor: 'pointer' }} onClick={() => navigate('/leaderboard')}><span>🏆 排行榜</span><span>›</span></div>
+          <div className="card flex items-center justify-between" style={{ cursor: 'pointer' }} onClick={() => navigate('/notifications')}><span>🔔 通知</span></div>
           <div className="card flex items-center justify-between mt-12" style={{ cursor: 'pointer', color: 'var(--danger)' }} onClick={handleLogout}><span>🚪 登出</span><span>›</span></div>
         </div>
       </div>

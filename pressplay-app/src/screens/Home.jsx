@@ -7,7 +7,7 @@ import courses from '../data/courses'
 export default function Home() {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const displayName = user?.username?.split('@')[0] || 'Ava'
+  const displayName = user?.username?.split('@')[0] || '小明'
 
   const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
   const completedCount = completedVideos.length

@@ -4,8 +4,6 @@ const items = [
   { path: '/', icon: '🏠', label: '首頁' },
   { path: '/garden', icon: '🌸', label: '花園' },
   { path: '/forest', icon: '🌲', label: '森林' },
-  { path: '/partners', icon: '🤝', label: '夥伴' },
-  { path: '/leaderboard', icon: '🏆', label: '排行' },
   { path: '/profile', icon: '👤', label: '我的' },
 ]
 

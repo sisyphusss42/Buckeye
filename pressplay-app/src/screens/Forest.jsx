@@ -57,6 +57,28 @@ export default function Forest() {
   return (
     <div className="screen">
       <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {/* Leaderboard button */}
+        <div
+          onClick={() => navigate('/leaderboard')}
+          style={{
+            position: 'absolute',
+            top: 12,
+            right: 16,
+            zIndex: 10,
+            background: 'rgba(255,255,255,0.9)',
+            borderRadius: 12,
+            padding: '6px 12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            fontSize: 13,
+            fontWeight: 600,
+          }}
+        >
+          🏆 排行
+        </div>
         <div
           aria-label="均一創作者森林"
           onClick={handleForestClick}
