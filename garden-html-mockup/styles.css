@@ -1,0 +1,331 @@
+:root {
+  --green: #5faf6a;
+  --green-light: #e8f5e9;
+  --text: #202124;
+  --muted: #74777b;
+  --inactive: #9b8f9d;
+  --white: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  overflow: auto;
+  background: #f1f1f1;
+  color: var(--text);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.phone {
+  width: min(438px, calc(100vw - 28px));
+  height: min(950px, calc(100vh - 28px));
+  min-height: 620px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 100px 98px;
+  overflow: hidden;
+  background: #fff;
+  border: 9px solid #202020;
+  border-radius: 46px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 70%) inset;
+}
+
+.garden {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: #75c674;
+}
+
+.garden-art {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ai-companion {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  z-index: 3;
+  width: 94px;
+  max-width: 23vw;
+  pointer-events: none;
+  transform: translateX(135%);
+  transform-origin: center bottom;
+  animation: companion-enter 1.75s cubic-bezier(.2, .72, .3, 1) .1s forwards;
+}
+
+.companion-character {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  transform-origin: center bottom;
+  animation: farmer-steps .28s ease-in-out .1s 6 alternate;
+}
+
+.companion-alert {
+  position: absolute;
+  top: -13px;
+  right: -2px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 29px;
+  padding: 0 5px;
+  color: #62441d;
+  background: #fff9d9;
+  border: 2.5px solid #e9ad31;
+  border-radius: 11px;
+  box-shadow: 0 3px 7px rgb(64 87 44 / 18%);
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(6px) scale(.78);
+  animation: alert-pop .42s cubic-bezier(.2, 1.6, .45, 1) 1.8s forwards,
+             alert-bob 1.4s ease-in-out 2.3s infinite;
+}
+
+.companion-alert::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: -6px;
+  width: 8px;
+  height: 8px;
+  background: #fff9d9;
+  border-right: 2.5px solid #e9ad31;
+  border-bottom: 2.5px solid #e9ad31;
+  transform: rotate(45deg);
+}
+
+.farmer-arm {
+  transform-box: fill-box;
+}
+
+.farmer-arm-wave {
+  transform-origin: 8% 94%;
+  animation: farmer-wave 1.25s ease-in-out 1.85s infinite;
+}
+
+@keyframes companion-enter {
+  0% { transform: translateX(135%) translateY(2px) rotate(3deg); }
+  22% { transform: translateX(102%) translateY(-3px) rotate(-2deg); }
+  44% { transform: translateX(68%) translateY(1px) rotate(2deg); }
+  66% { transform: translateX(34%) translateY(-3px) rotate(-1deg); }
+  86% { transform: translateX(-3%) translateY(0) rotate(1deg); }
+  100% { transform: translateX(0) translateY(0) rotate(0); }
+}
+
+@keyframes farmer-steps {
+  from { transform: translateY(0) rotate(-.7deg); }
+  to { transform: translateY(-4px) rotate(.7deg); }
+}
+
+@keyframes farmer-wave {
+  0%, 100% { transform: rotate(0deg); }
+  24% { transform: rotate(-7deg); }
+  48% { transform: rotate(6deg); }
+  70% { transform: rotate(-5deg); }
+  86% { transform: rotate(3deg); }
+}
+
+@keyframes alert-pop {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes alert-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.reminder-area {
+  display: flex;
+  align-items: center;
+  padding: 12px 17px;
+  background: #faf9f7;
+}
+
+.reminder-card {
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 17px 12px 25px;
+  background: rgb(255 255 255 / 97%);
+  border-radius: 20px;
+  box-shadow: 0 4px 17px rgb(0 0 0 / 9%);
+}
+
+.water-drop {
+  width: 20px;
+  height: 27px;
+  flex: 0 0 auto;
+  border-radius: 55% 45% 58% 42% / 65% 45% 55% 35%;
+  background: linear-gradient(155deg, #69d5ff 8%, #648cf6 82%);
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 5px rgb(255 255 255 / 55%) inset;
+}
+
+.reminder-copy {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.reminder-copy strong {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.reminder-copy span {
+  margin-top: 2px;
+  color: #5f6368;
+  font-size: 13px;
+}
+
+.review-pill {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bottom-nav {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  padding: 10px 7px 17px;
+  background: var(--white);
+  border-top: 1px solid #e8eaed;
+}
+
+.nav-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--inactive);
+  font-size: 13px;
+  line-height: 1;
+  user-select: none;
+}
+
+.nav-item.active {
+  color: var(--green);
+}
+
+.nav-icon {
+  display: block;
+  font-size: 23px;
+  line-height: 1.2;
+  filter: saturate(.9);
+}
+
+@media (max-height: 760px) {
+  .phone {
+    grid-template-rows: minmax(0, 1fr) 82px 82px;
+    border-radius: 34px;
+  }
+
+  .reminder-area {
+    padding-block: 8px;
+  }
+
+  .reminder-card {
+    min-height: 58px;
+    padding-block: 8px;
+  }
+
+  .bottom-nav {
+    padding-block: 7px 10px;
+  }
+
+  .ai-companion {
+    right: 2px;
+    bottom: 5px;
+    width: 102px;
+  }
+
+  .companion-alert {
+    top: -14px;
+    min-width: 35px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  body {
+    padding: 0;
+    background: #fff;
+  }
+
+  .phone {
+    width: 100vw;
+    height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .reminder-card {
+    padding-left: 18px;
+  }
+
+  .reminder-copy strong {
+    font-size: 14px;
+  }
+
+  .nav-item {
+    font-size: 11px;
+  }
+
+  .ai-companion {
+    width: 108px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-companion,
+  .companion-character,
+  .companion-alert,
+  .farmer-arm-wave {
+    animation: none;
+  }
+
+  .ai-companion {
+    transform: none;
+  }
+
+  .companion-alert {
+    opacity: 1;
+    transform: none;
+  }
+
+  .farmer-arm-wave {
+    transform: rotate(-16deg);
+  }
+}
