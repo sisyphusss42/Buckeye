@@ -2,16 +2,16 @@ import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import { useAuth } from '../auth/AuthContext'
-import videos from '../data/videos'
+import courses from '../data/courses'
 
 export default function Home() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const displayName = user?.username?.split('@')[0] || 'Ava'
 
-  // Check completed videos from localStorage
   const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
   const completedCount = completedVideos.length
+  const totalEpisodes = courses.reduce((sum, c) => sum + c.episodes.length, 0)
 
   return (
     <div className="screen">
@@ -25,47 +25,54 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Streak Card */}
+        {/* Progress Card */}
         <div className="card" style={{ background: 'linear-gradient(135deg,var(--green-light),var(--yellow-light))', marginBottom: 20 }}>
           <div className="flex items-center justify-between">
-            <div><div className="text-caption">已完成課程</div><div className="text-h2">{completedCount} / {videos.length} 🔥</div></div>
-            <div style={{ fontSize: 20, fontWeight: 700 }}>{completedCount}/{videos.length}</div>
+            <div><div className="text-caption">學習進度</div><div className="text-h2">{completedCount} 堂完成 🔥</div></div>
+            <div style={{ fontSize: 16, fontWeight: 700 }}>{completedCount}/{totalEpisodes}</div>
           </div>
-          <p className="text-caption" style={{ marginTop: 8 }}>
-            {completedCount < videos.length ? '繼續學習，讓花園更加茂盛 ✨' : '太厲害了！全部完成 🎉'}
-          </p>
+          <div className="progress-bar mt-8" style={{ height: 6 }}>
+            <div className="fill green" style={{ width: `${(completedCount / totalEpisodes) * 100}%` }} />
+          </div>
         </div>
 
         {/* Course List */}
         <div className="flex items-center justify-between mb-12">
           <span className="text-title">課程列表</span>
-          <span className="text-caption">{videos.length} 堂課</span>
+          <span className="text-caption">{courses.length} 門課程</span>
         </div>
 
-        {videos.map(video => {
-          const isCompleted = completedVideos.some(c => c.videoId === video.id)
+        {courses.map(course => {
+          const courseCompleted = completedVideos.filter(cv =>
+            course.episodes.some(ep => ep.id === cv.videoId)
+          ).length
           return (
-            <div key={video.id} className="card flex items-center gap-12 mb-12" style={{ cursor: 'pointer' }} onClick={() => navigate(`/video/${video.id}`)}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, background: isCompleted ? 'var(--green-light)' : 'var(--blue-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
-                {isCompleted ? '✅' : video.icon}
+            <div key={course.id} className="card mb-12" style={{ cursor: 'pointer' }} onClick={() => navigate(`/course/${course.id}`)}>
+              <div className="flex items-center gap-12">
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: course.color + '22', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+                  {course.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="text-body" style={{ fontWeight: 600 }}>{course.title}</div>
+                  <div className="text-caption">{course.subtitle}</div>
+                  <div className="progress-bar mt-8" style={{ height: 4 }}>
+                    <div className="fill" style={{ width: `${(courseCompleted / course.episodes.length) * 100}%`, background: course.color, height: '100%', borderRadius: 'var(--r-full)' }} />
+                  </div>
+                  <div className="text-small mt-4">{courseCompleted} / {course.episodes.length} 集</div>
+                </div>
+                <div style={{ fontSize: 16 }}>›</div>
               </div>
-              <div className="flex-1">
-                <div className="text-body" style={{ fontWeight: 600 }}>{video.title}</div>
-                <div className="text-caption">{video.subtitle}</div>
-                <div className="text-small mt-4">{video.category} · {video.duration}</div>
-              </div>
-              <div style={{ fontSize: 20 }}>▶</div>
             </div>
           )
         })}
 
         {/* Review Reminder */}
         {completedCount > 0 && (
-          <div className="card mt-16" style={{ background: 'var(--yellow-light)', cursor: 'pointer' }} onClick={() => navigate('/review')}>
+          <div className="card mt-12" style={{ background: 'var(--yellow-light)', cursor: 'pointer' }} onClick={() => navigate('/garden')}>
             <div className="flex items-center gap-12">
               <span style={{ fontSize: 28 }}>🧠</span>
-              <div className="flex-1"><div style={{ fontWeight: 600 }}>{completedCount} 個知識點待複習</div><div className="text-caption">趁記憶還新，快澆水</div></div>
-              <span className="btn btn-small btn-primary">複習</span>
+              <div className="flex-1"><div style={{ fontWeight: 600 }}>{completedCount} 個知識點待複習</div><div className="text-caption">去花園看看哪些花需要澆水</div></div>
+              <span className="btn btn-small btn-primary">花園</span>
             </div>
           </div>
         )}

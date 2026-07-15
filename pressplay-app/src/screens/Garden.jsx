@@ -2,20 +2,19 @@ import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import { buildGardenSVG } from '../gardenScene'
-import videos from '../data/videos'
+import { findEpisode } from '../data/courses'
 import { getCurrentFamiliarity, getFlowerState } from '../data/spacedRepetition'
 
 export default function Garden() {
   const navigate = useNavigate()
 
-  // Get completed videos from localStorage
   const completedVideos = JSON.parse(localStorage.getItem('completedVideos') || '[]')
 
-  // Build flower data from completed videos
   const flowers = completedVideos.map((cv, i) => {
+    const ep = findEpisode(cv.videoId)
     const state = getFlowerState(cv.videoId)
     return {
-      title: videos.find(v => v.id === cv.videoId)?.title || cv.videoId,
+      title: ep?.title || cv.videoId,
       petals: state.petals || 4,
       colorIndex: i,
     }
@@ -33,7 +32,7 @@ export default function Garden() {
         </div>
         <p className="text-caption mb-12">
           {flowers.length > 0
-            ? `${flowers.length} 朵花 · 本週 +${flowers.length} 綻放`
+            ? `${flowers.length} 朵花 · 完成更多課程來擴大花園`
             : '花園還是空的，去看影片種下第一朵花吧'}
         </p>
 
@@ -43,18 +42,17 @@ export default function Garden() {
           dangerouslySetInnerHTML={{ __html: gardenHTML }}
         />
 
-        {/* Flower list — tap to see detail */}
+        {/* Flower list */}
         {flowers.length > 0 && (
           <div className="flex gap-12 mt-16" style={{ overflowX: 'auto', paddingBottom: 4 }}>
-            {completedVideos.map((cv, i) => {
-              const video = videos.find(v => v.id === cv.videoId)
+            {completedVideos.map((cv) => {
+              const ep = findEpisode(cv.videoId)
               const { familiarity } = getCurrentFamiliarity(cv.videoId)
-              const state = getFlowerState(cv.videoId)
               return (
                 <div key={cv.videoId} className="card" style={{ minWidth: 100, textAlign: 'center', cursor: 'pointer' }} onClick={() => navigate(`/flower/${cv.videoId}`)}>
                   <div style={{ fontSize: 28 }}>🌸</div>
-                  <div className="text-small mt-4">{video?.title || cv.videoId}</div>
-                  <div className="text-small" style={{ color: familiarity >= 60 ? 'var(--green)' : 'var(--warning)' }}>{familiarity}% 熟悉</div>
+                  <div className="text-small mt-4">{ep?.title || cv.videoId}</div>
+                  <div className="text-small" style={{ color: familiarity >= 60 ? 'var(--green)' : 'var(--warning)' }}>{familiarity}%</div>
                 </div>
               )
             })}

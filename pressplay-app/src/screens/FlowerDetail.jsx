@@ -1,27 +1,26 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
-import videos from '../data/videos'
-import { getCurrentFamiliarity, getNextReviewText, getFlowerState } from '../data/spacedRepetition'
+import { findEpisode } from '../data/courses'
+import { getCurrentFamiliarity, getNextReviewText } from '../data/spacedRepetition'
 
 export default function FlowerDetail() {
   const navigate = useNavigate()
   const { videoId } = useParams()
 
-  const video = videos.find(v => v.id === videoId) || videos[0]
-  const { familiarity, state } = getCurrentFamiliarity(video.id)
-  const nextReview = getNextReviewText(video.id)
+  const episode = findEpisode(videoId)
+  const title = episode?.title || videoId
+  const courseTitle = episode?.courseTitle || ''
+  const { familiarity, state } = getCurrentFamiliarity(videoId)
+  const nextReview = getNextReviewText(videoId)
   const petals = state.petals || 4
 
-  // Determine growth stage based on familiarity
   const getStage = () => {
-    if (familiarity >= 90) return 3 // 精通
-    if (familiarity >= 60) return 2 // 綻放
-    if (familiarity >= 30) return 1 // 測驗
-    return 0 // 學習
+    if (familiarity >= 90) return 3
+    if (familiarity >= 60) return 2
+    if (familiarity >= 30) return 1
+    return 0
   }
   const stage = getStage()
-
-  // Familiarity color
   const familiarityColor = familiarity >= 70 ? 'var(--green)' : familiarity >= 40 ? 'var(--yellow)' : 'var(--danger)'
 
   return (
@@ -34,8 +33,8 @@ export default function FlowerDetail() {
           <div style={{ position: 'absolute', top: 0, left: '30%', fontSize: 16 }}>✨</div>
           <div style={{ position: 'absolute', top: 10, right: '30%', fontSize: 14 }}>✨</div>
         </div>
-        <div className="text-caption" style={{ color: 'var(--green)' }}>{video.category} · {stage >= 2 ? '已掌握' : '學習中'}</div>
-        <h2 className="text-h2" style={{ margin: '4px 0 8px' }}>{video.title}</h2>
+        <div className="text-caption" style={{ color: 'var(--green)' }}>{courseTitle} · {stage >= 2 ? '已掌握' : '學習中'}</div>
+        <h2 className="text-h2" style={{ margin: '4px 0 8px' }}>{title}</h2>
 
         {/* Familiarity */}
         <div className="card mb-16" style={{ background: 'var(--gray-100)' }}>
@@ -84,8 +83,8 @@ export default function FlowerDetail() {
           </div>
         </div>
 
-        <button className="btn btn-primary mb-12" onClick={() => navigate(`/quiz/${video.id}`)}>開始複習 💧</button>
-        <button className="btn btn-ghost" onClick={() => navigate(`/video/${video.id}`)}>重看影片</button>
+        <button className="btn btn-primary mb-12" onClick={() => navigate(`/quiz/${videoId}`)}>開始複習 💧</button>
+        <button className="btn btn-ghost" onClick={() => navigate(`/video/${videoId}`)}>重看影片</button>
       </div>
     </div>
   )

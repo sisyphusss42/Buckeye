@@ -1,31 +1,30 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import videos from '../data/videos'
+import { findEpisode } from '../data/courses'
 
 export default function Video() {
   const navigate = useNavigate()
   const { videoId } = useParams()
   const [completed, setCompleted] = useState(false)
 
-  // Find the video or default to first
-  const video = videos.find(v => v.id === videoId) || videos[0]
+  const episode = findEpisode(videoId)
+  if (!episode) return <div className="screen"><p style={{ padding: 40 }}>找不到此影片</p></div>
 
   const handleMarkComplete = () => {
     if (!completed) {
       setCompleted(true)
       const finishData = {
-        videoId: video.id,
-        title: video.title,
+        videoId: episode.id,
+        title: episode.title,
+        courseId: episode.courseId,
         completedAt: new Date().toISOString(),
       }
       console.log('✅ 影片觀看完成', finishData)
-      // Store in localStorage for garden
       const history = JSON.parse(localStorage.getItem('completedVideos') || '[]')
-      if (!history.find(h => h.videoId === video.id)) {
+      if (!history.find(h => h.videoId === episode.id)) {
         history.push(finishData)
         localStorage.setItem('completedVideos', JSON.stringify(history))
       }
-      // Redirect to garden after a short delay
       setTimeout(() => navigate('/garden'), 1500)
     }
   }
@@ -35,12 +34,12 @@ export default function Video() {
       {/* YouTube Embed */}
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: '#000', flexShrink: 0 }}>
         <div style={{ position: 'absolute', top: 12, left: 16, zIndex: 10 }}>
-          <div className="back-btn" onClick={() => navigate('/')} style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}>‹</div>
+          <div className="back-btn" onClick={() => navigate(`/course/${episode.courseId}`)} style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}>‹</div>
         </div>
         <iframe
           width="100%"
           height="100%"
-          src={`https://www.youtube.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
+          src={`https://www.youtube.com/embed/${episode.youtubeId}?rel=0&modestbranding=1`}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
@@ -50,9 +49,8 @@ export default function Video() {
 
       {/* Content */}
       <div className="screen-content" style={{ paddingTop: 16 }}>
-        <div className="text-caption" style={{ color: 'var(--green)' }}>{video.category} · {video.duration}</div>
-        <h2 className="text-title" style={{ margin: '4px 0 8px' }}>{video.title}</h2>
-        <p className="text-caption">{video.subtitle}</p>
+        <div className="text-caption" style={{ color: episode.courseColor }}>{episode.courseIcon} {episode.courseTitle}</div>
+        <h2 className="text-title" style={{ margin: '4px 0 8px' }}>{episode.title}</h2>
 
         {!completed ? (
           <button className="btn btn-primary mt-16" onClick={handleMarkComplete}>
@@ -66,8 +64,8 @@ export default function Video() {
           </div>
         )}
 
-        <div className="ai-bubble mt-16" style={{ cursor: 'pointer' }} onClick={() => navigate(`/quiz/${video.id}`)}>
-          想測驗一下對「{video.title}」的理解嗎？
+        <div className="ai-bubble mt-16" style={{ cursor: 'pointer' }} onClick={() => navigate(`/quiz/${episode.id}`)}>
+          想測驗一下對「{episode.title}」的理解嗎？
           <div style={{ marginTop: 8 }}><span className="btn btn-small btn-primary">開始測驗</span></div>
         </div>
       </div>

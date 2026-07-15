@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import config from '../config'
-import videos from '../data/videos'
+import { findEpisode } from '../data/courses'
 import { recordQuizResult } from '../data/spacedRepetition'
 
-// Fallback quiz if API fails
 const FALLBACK_QUIZ = {
   questions: [{
-    question: '一元一次方程式中，若 3x + 5 = 20，x 等於多少？',
-    options: ['3', '5', '7', '15'],
-    correctIndex: 1,
-    explanation: '3x = 20 - 5 = 15，所以 x = 15 ÷ 3 = 5',
+    question: '地球內部構造中，哪一層的溫度最高？',
+    options: ['地殼', '上部地函', '外地核', '內地核'],
+    correctIndex: 3,
+    explanation: '內地核位於地球最中心，溫度最高，約5000-6000°C。',
   }]
 }
 
@@ -25,34 +24,27 @@ export default function Quiz() {
   const [loading, setLoading] = useState(true)
   const [correctCount, setCorrectCount] = useState(0)
 
-  const video = videos.find(v => v.id === videoId) || videos[0]
+  const episode = findEpisode(videoId)
+  const title = episode?.title || '測驗'
+  const topic = episode?.topic || '地球科學'
 
-  useEffect(() => {
-    loadQuiz()
-  }, [])
+  useEffect(() => { loadQuiz() }, [])
 
   async function loadQuiz() {
     if (!config.api.baseUrl || config.api.baseUrl === 'YOUR_API_GATEWAY_URL') {
-      setQuiz(FALLBACK_QUIZ)
-      setLoading(false)
-      return
+      setQuiz(FALLBACK_QUIZ); setLoading(false); return
     }
-
     try {
       const token = await getToken()
       const res = await fetch(`${config.api.baseUrl}/quiz/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
-        body: JSON.stringify({ topic: video.topic, numQuestions: 3 }),
+        body: JSON.stringify({ topic, numQuestions: 3 }),
       })
       const data = await res.json()
-      if (data.questions && data.questions.length > 0) {
-        setQuiz(data)
-      } else {
-        setQuiz(FALLBACK_QUIZ)
-      }
+      setQuiz(data.questions?.length > 0 ? data : FALLBACK_QUIZ)
     } catch (e) {
-      console.warn('Quiz API failed, using fallback:', e)
+      console.warn('Quiz API failed:', e)
       setQuiz(FALLBACK_QUIZ)
     }
     setLoading(false)
@@ -65,7 +57,7 @@ export default function Quiz() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
           <div className="quiz-card" style={{ textAlign: 'center', padding: 40 }}>
             <span style={{ fontSize: 40 }}>🤖</span>
-            <p className="text-body mt-12">AI 正在根據「{video.title}」出題...</p>
+            <p className="text-body mt-12">AI 正在根據「{title}」出題...</p>
           </div>
         </div>
       </div>
@@ -79,9 +71,7 @@ export default function Quiz() {
   const handleAnswer = (idx) => {
     if (answered !== null) return
     setAnswered(idx)
-    if (idx === quiz.questions[currentQ].correctIndex) {
-      setCorrectCount(c => c + 1)
-    }
+    if (idx === q.correctIndex) setCorrectCount(c => c + 1)
   }
 
   const handleNext = () => {
@@ -89,15 +79,9 @@ export default function Quiz() {
       setCurrentQ(currentQ + 1)
       setAnswered(null)
     } else {
-      // Quiz finished — record result (recalculate correct since setState is async)
-      const finalCorrect = quiz.questions.reduce((acc, question, idx) => {
-        if (idx < currentQ) return acc // already counted in correctCount
-        if (idx === currentQ && answered === question.correctIndex) return acc + 1
-        return acc
-      }, correctCount)
-      recordQuizResult(video.id, correctCount, totalQ)
-      console.log(`📊 測驗完成: ${video.title} — ${correctCount}/${totalQ} 正確`)
-      navigate(`/flower/${video.id}`)
+      recordQuizResult(episode?.id || videoId, correctCount, totalQ)
+      console.log(`📊 測驗完成: ${title} — ${correctCount}/${totalQ}`)
+      navigate(`/flower/${episode?.id || videoId}`)
     }
   }
 
@@ -109,7 +93,7 @@ export default function Quiz() {
           <div style={{ textAlign: 'center', marginBottom: 16 }}>
             <span style={{ fontSize: 32 }}>🤖</span>
             <h3 className="text-title" style={{ marginTop: 8 }}>AI 測驗 · {currentQ + 1}/{totalQ}</h3>
-            <p className="text-caption">{video.title}</p>
+            <p className="text-caption">{title}</p>
           </div>
           <p style={{ fontSize: 15, fontWeight: 500, marginBottom: 16 }}>{q.question}</p>
           <div>
@@ -119,11 +103,7 @@ export default function Quiz() {
                 if (i === q.correctIndex) cls += ' correct'
                 else if (i === answered) cls += ' wrong'
               }
-              return (
-                <div key={i} className={cls} onClick={() => handleAnswer(i)}>
-                  {opt}{answered !== null && i === q.correctIndex && ' ✓'}
-                </div>
-              )
+              return <div key={i} className={cls} onClick={() => handleAnswer(i)}>{opt}{answered !== null && i === q.correctIndex && ' ✓'}</div>
             })}
           </div>
           {answered !== null && (

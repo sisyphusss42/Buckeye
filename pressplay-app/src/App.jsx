@@ -3,6 +3,7 @@ import { useAuth } from './auth/AuthContext'
 import Splash from './screens/Splash'
 import Survey from './screens/Survey'
 import Home from './screens/Home'
+import Course from './screens/Course'
 import Video from './screens/Video'
 import Quiz from './screens/Quiz'
 import Garden from './screens/Garden'
@@ -31,12 +32,10 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/survey" element={<Survey />} />
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/video" element={<ProtectedRoute><Video /></ProtectedRoute>} />
+        <Route path="/course/:courseId" element={<ProtectedRoute><Course /></ProtectedRoute>} />
         <Route path="/video/:videoId" element={<ProtectedRoute><Video /></ProtectedRoute>} />
-        <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
         <Route path="/quiz/:videoId" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
         <Route path="/garden" element={<ProtectedRoute><Garden /></ProtectedRoute>} />
-        <Route path="/flower" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
         <Route path="/flower/:videoId" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
         <Route path="/partners" element={<ProtectedRoute><Partners /></ProtectedRoute>} />
