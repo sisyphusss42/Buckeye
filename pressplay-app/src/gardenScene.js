@@ -13,7 +13,7 @@ function shadow(cx, cy, rx) {
   return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx * 0.28}" fill="#3E5C36" opacity="0.14"/>`;
 }
 
-function treeG(cx, baseY, s, kind) {
+export function treeG(cx, baseY, s, kind) {
   let g = `<g style="transform-origin:${cx}px ${baseY}px">`;
   g += shadow(cx, baseY + 2, 22 * s);
 

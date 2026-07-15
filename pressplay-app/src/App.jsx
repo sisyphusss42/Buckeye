@@ -7,6 +7,7 @@ import Course from './screens/Course'
 import Video from './screens/Video'
 import Quiz from './screens/Quiz'
 import Garden from './screens/Garden'
+import Forest from './screens/Forest'
 import FlowerDetail from './screens/FlowerDetail'
 import Review from './screens/Review'
 import ReviewSession from './screens/ReviewSession'
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/video/:videoId" element={<ProtectedRoute><Video /></ProtectedRoute>} />
         <Route path="/quiz/:videoId" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
         <Route path="/garden" element={<ProtectedRoute><Garden /></ProtectedRoute>} />
+        <Route path="/forest" element={<ProtectedRoute><Forest /></ProtectedRoute>} />
         <Route path="/flower/:videoId" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
         <Route path="/review-session" element={<ProtectedRoute><ReviewSession /></ProtectedRoute>} />
