@@ -1,32 +1,35 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import config from '../config'
+import videos from '../data/videos'
 
-// Fallback quiz if API is not yet configured or fails
+// Fallback quiz if API fails
 const FALLBACK_QUIZ = {
   questions: [{
-    question: '主體放在九宮格的哪個位置，畫面最自然？',
-    options: ['正中央', '四條線的交叉點', '最上緣', '畫面角落'],
+    question: '一元一次方程式中，若 3x + 5 = 20，x 等於多少？',
+    options: ['3', '5', '7', '15'],
     correctIndex: 1,
-    explanation: '三分法則將畫面分成九宮格，主體放在交叉點上比置中更自然。',
+    explanation: '3x = 20 - 5 = 15，所以 x = 15 ÷ 3 = 5',
   }]
 }
 
 export default function Quiz() {
   const navigate = useNavigate()
+  const { videoId } = useParams()
   const { getToken } = useAuth()
   const [quiz, setQuiz] = useState(null)
   const [currentQ, setCurrentQ] = useState(0)
   const [answered, setAnswered] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const video = videos.find(v => v.id === videoId) || videos[0]
+
   useEffect(() => {
     loadQuiz()
   }, [])
 
   async function loadQuiz() {
-    // Skip API call if not configured yet
     if (!config.api.baseUrl || config.api.baseUrl === 'YOUR_API_GATEWAY_URL') {
       setQuiz(FALLBACK_QUIZ)
       setLoading(false)
@@ -37,11 +40,8 @@ export default function Quiz() {
       const token = await getToken()
       const res = await fetch(`${config.api.baseUrl}/quiz/generate`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        body: JSON.stringify({ topic: '攝影', numQuestions: 3 }),
+        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        body: JSON.stringify({ topic: video.topic, numQuestions: 3 }),
       })
       const data = await res.json()
       if (data.questions && data.questions.length > 0) {
@@ -63,7 +63,7 @@ export default function Quiz() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
           <div className="quiz-card" style={{ textAlign: 'center', padding: 40 }}>
             <span style={{ fontSize: 40 }}>🤖</span>
-            <p className="text-body mt-12">AI 正在出題...</p>
+            <p className="text-body mt-12">AI 正在根據「{video.title}」出題...</p>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function Quiz() {
       setCurrentQ(currentQ + 1)
       setAnswered(null)
     } else {
-      navigate('/video')
+      navigate(`/video/${video.id}`)
     }
   }
 
@@ -95,7 +95,8 @@ export default function Quiz() {
         <div className="quiz-card">
           <div style={{ textAlign: 'center', marginBottom: 16 }}>
             <span style={{ fontSize: 32 }}>🤖</span>
-            <h3 className="text-title" style={{ marginTop: 8 }}>AI 快速測驗 · {currentQ + 1}/{totalQ}</h3>
+            <h3 className="text-title" style={{ marginTop: 8 }}>AI 測驗 · {currentQ + 1}/{totalQ}</h3>
+            <p className="text-caption">{video.title}</p>
           </div>
           <p style={{ fontSize: 15, fontWeight: 500, marginBottom: 16 }}>{q.question}</p>
           <div>
@@ -115,13 +116,11 @@ export default function Quiz() {
           {answered !== null && (
             <div style={{ marginTop: 16, textAlign: 'center' }}>
               <div style={{ background: isCorrect ? 'var(--green-light)' : 'var(--yellow-light)', borderRadius: 12, padding: 12, marginBottom: 8 }}>
-                {isCorrect ? '🌸 答對了！這朵花長出新花瓣' : '🍃 沒關係，記住這個知識點'}
+                {isCorrect ? '🌸 答對了！花瓣 +1' : '🍃 沒關係，記住這個知識點'}
               </div>
-              {q.explanation && (
-                <p className="text-caption" style={{ marginBottom: 12 }}>{q.explanation}</p>
-              )}
+              {q.explanation && <p className="text-caption" style={{ marginBottom: 12 }}>{q.explanation}</p>}
               <button className="btn btn-primary" onClick={handleNext}>
-                {currentQ < totalQ - 1 ? '下一題' : '繼續學習'}
+                {currentQ < totalQ - 1 ? '下一題' : '完成測驗'}
               </button>
             </div>
           )}

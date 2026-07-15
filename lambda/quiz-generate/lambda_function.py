@@ -22,7 +22,7 @@ def generate_quiz(topic, content, num_questions=3, language='zh-TW'):
 
     prompt = f"""你是一個教育AI助教，專門幫助學習者鞏固知識。
 
-根據以下課程內容，生成 {num_questions} 個選擇題。每題包含：
+根據以下主題，生成 {num_questions} 個選擇題來測驗學習者的理解。每題包含：
 - 一個問題（question）
 - 4 個選項（options 陣列）
 - 正確答案的索引（correctIndex，0-3）
@@ -30,10 +30,10 @@ def generate_quiz(topic, content, num_questions=3, language='zh-TW'):
 
 主題：{topic}
 
-課程內容：
-{content}
+{f'參考內容：{content}' if content else '請根據這個主題的核心知識點出題。'}
 
-請用繁體中文（zh-TW）回答。嚴格以 JSON 格式輸出，不要包含其他文字：
+請用繁體中文（zh-TW）回答。題目應該測驗此主題的核心概念和常見計算。
+嚴格以 JSON 格式輸出，不要包含其他文字：
 {{
   "questions": [
     {{
@@ -88,13 +88,9 @@ def lambda_handler(event, context):
     except (json.JSONDecodeError, TypeError):
         return response(400, {'error': '無效的請求格式'})
 
-    topic = body.get('topic', '攝影')
+    topic = body.get('topic', '數學')
     content = body.get('content', '')
     num_questions = body.get('numQuestions', 3)
-
-    # If no content provided, use a default sample for demo
-    if not content:
-        content = get_demo_content(topic)
 
     try:
         quiz = generate_quiz(topic, content, num_questions)

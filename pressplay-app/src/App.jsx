@@ -32,9 +32,12 @@ export default function App() {
         <Route path="/survey" element={<Survey />} />
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/video" element={<ProtectedRoute><Video /></ProtectedRoute>} />
+        <Route path="/video/:videoId" element={<ProtectedRoute><Video /></ProtectedRoute>} />
         <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+        <Route path="/quiz/:videoId" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
         <Route path="/garden" element={<ProtectedRoute><Garden /></ProtectedRoute>} />
         <Route path="/flower" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
+        <Route path="/flower/:videoId" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
         <Route path="/partners" element={<ProtectedRoute><Partners /></ProtectedRoute>} />
         <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />

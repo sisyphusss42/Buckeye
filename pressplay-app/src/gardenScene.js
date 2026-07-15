@@ -1,5 +1,5 @@
 // Procedural Garden Scene SVG Generator
-// Ported from design system — generates cartoon trees, fence, soil beds, planted flowers
+// Now accepts a list of flowers to plant based on user's completed videos
 
 const PETAL_COLORS = ['#F08DAA', '#F6C453', '#6FA8FF', '#B38AF5', '#7BC98A'];
 
@@ -42,7 +42,6 @@ function treeG(cx, baseY, s, kind) {
     g += blob(cx, cy - 14 * s, 22 * s, 'gLeaf');
     g += `<circle cx="${cx - 8 * s}" cy="${cy - 16 * s}" r="${8 * s}" fill="#fff" opacity="0.22"/>`;
   } else {
-    // ancient
     const h = 58 * s;
     g += trunk(22 * s, h);
     g += `<ellipse cx="${cx - 11 * s}" cy="${baseY - 2 * s}" rx="${9 * s}" ry="${5 * s}" fill="url(#gTrunk)"/>`;
@@ -76,11 +75,8 @@ function plantedFlowerG(cx, baseY, petals, s, wilted, idx) {
   }
 
   const color = PETAL_COLORS[idx % PETAL_COLORS.length];
-  // stem
   g += `<path d="M${cx} ${baseY} Q ${cx - 3 * s} ${baseY - 16 * s} ${cx} ${headY + 6 * s}" stroke="#5FAF6A" stroke-width="${3.4 * s}" fill="none" stroke-linecap="round"/>`;
-  // leaf
   g += `<ellipse cx="${cx - 8 * s}" cy="${baseY - 14 * s}" rx="${7 * s}" ry="${3.6 * s}" fill="url(#gLeaf)" transform="rotate(-30 ${cx - 8 * s} ${baseY - 14 * s})"/>`;
-  // head petals
   const r = 10 * s;
   for (let i = 0; i < petals; i++) {
     const a = (i / petals) * Math.PI * 2;
@@ -95,8 +91,19 @@ function plantedFlowerG(cx, baseY, petals, s, wilted, idx) {
   return g;
 }
 
-export function buildGardenSVG() {
-  const W = 390, H = 470;
+// Label text under a flower
+function flowerLabel(cx, baseY, text, s) {
+  const labelY = baseY + 14 * s;
+  return `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="${9 * s}" font-family="'Noto Sans TC', sans-serif" fill="#5E3C22" opacity="0.85">${text}</text>`;
+}
+
+/**
+ * Build the garden SVG.
+ * @param {Array} flowers — array of { title, petals, colorIndex } for each completed video
+ *   If empty, shows an empty garden with a "plant your first flower" message.
+ */
+export function buildGardenSVG(flowers = []) {
+  const W = 390, H = 420;
   let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block">`;
 
   // Defs
@@ -111,7 +118,7 @@ export function buildGardenSVG() {
   </defs>`;
 
   // Sky + sun + clouds
-  s += `<rect x="0" y="0" width="${W}" height="220" fill="url(#gSky)"/>`;
+  s += `<rect x="0" y="0" width="${W}" height="200" fill="url(#gSky)"/>`;
   s += `<circle cx="322" cy="52" r="46" fill="#FFE9A8" opacity="0.35"/><circle cx="322" cy="52" r="30" fill="url(#gSun)"/>`;
 
   const cloud = (x, y, k) =>
@@ -119,64 +126,51 @@ export function buildGardenSVG() {
   s += cloud(60, 58, 1) + cloud(190, 38, 0.8);
 
   // Rolling hills
-  s += `<path d="M0 200 Q 90 150 190 190 T 390 175 V 230 H0 Z" fill="#BFE5A6"/>`;
-  s += `<path d="M0 215 Q 120 178 240 210 T 390 200 V 260 H0 Z" fill="#A7DB92"/>`;
+  s += `<path d="M0 180 Q 90 140 190 170 T 390 155 V 210 H0 Z" fill="#BFE5A6"/>`;
+  s += `<path d="M0 195 Q 120 160 240 190 T 390 180 V 230 H0 Z" fill="#A7DB92"/>`;
 
   // Grass ground
-  s += `<rect x="0" y="205" width="${W}" height="${H - 205}" fill="url(#gGrass)"/>`;
-
-  // Trees (behind fence)
-  s += treeG(70, 250, 1.15, 'large');
-  s += treeG(200, 244, 1.35, 'ancient');
-  s += treeG(320, 252, 1.0, 'young');
-  s += treeG(360, 256, 0.7, 'sprout');
+  s += `<rect x="0" y="185" width="${W}" height="${H - 185}" fill="url(#gGrass)"/>`;
 
   // Picket fence
-  const fenceTop = 258, fenceBot = 300, railY1 = 270, railY2 = 288;
-  s += `<rect x="0" y="${railY1}" width="${W}" height="6" rx="3" fill="#F2E4CC"/>`;
-  s += `<rect x="0" y="${railY2}" width="${W}" height="6" rx="3" fill="#EAD9BA"/>`;
+  const fenceTop = 218, fenceBot = 255, railY1 = 228, railY2 = 245;
+  s += `<rect x="0" y="${railY1}" width="${W}" height="5" rx="2.5" fill="#F2E4CC"/>`;
+  s += `<rect x="0" y="${railY2}" width="${W}" height="5" rx="2.5" fill="#EAD9BA"/>`;
   for (let x = 6; x < W; x += 34) {
     s += `<path d="M${x} ${fenceBot} V ${fenceTop} l 7 -9 l 7 9 V ${fenceBot} Z" fill="#FBF1DD" stroke="#E4D2B0" stroke-width="1.5"/>`;
   }
-  s += `<rect x="0" y="${railY1}" width="${W}" height="5" rx="2.5" fill="#fff" opacity="0.55"/>`;
+  s += `<rect x="0" y="${railY1}" width="${W}" height="4" rx="2" fill="#fff" opacity="0.55"/>`;
 
-  // Soil planting beds
-  const beds = [
-    { y: 322, h: 26, x: 34, w: 322, s: 0.9, list: [{ p: 8, c: 0 }, { p: 10, c: 1 }, { p: 6, c: 2 }, { p: 9, c: 3 }, { p: 7, c: 4 }] },
-    { y: 378, h: 30, x: 22, w: 346, s: 1.0, list: [{ p: 6, c: 1 }, { w: 1 }, { p: 8, c: 3 }, { p: 5, c: 0 }, { p: 10, c: 4 }] },
-    { y: 438, h: 34, x: 10, w: 370, s: 1.15, list: [{ p: 7, c: 2 }, { p: 9, c: 4 }, { p: 6, c: 0 }, { p: 8, c: 1 }, { p: 4, c: 3 }] },
-  ];
+  // Soil planting bed
+  const bedY = 340, bedH = 50, bedX = 30, bedW = 330;
+  s += `<rect x="${bedX}" y="${bedY - bedH}" width="${bedW}" height="${bedH + 60}" rx="${bedH * 0.6}" fill="url(#gSoil)"/>`;
+  s += `<rect x="${bedX + 4}" y="${bedY - bedH}" width="${bedW - 8}" height="10" rx="5" fill="#C99361" opacity="0.7"/>`;
 
-  beds.forEach(bed => {
-    // Mound
-    s += `<rect x="${bed.x}" y="${bed.y - bed.h}" width="${bed.w}" height="${bed.h + 40}" rx="${bed.h * 0.7}" fill="url(#gSoil)"/>`;
-    // Lighter tilled top
-    s += `<rect x="${bed.x + 4}" y="${bed.y - bed.h}" width="${bed.w - 8}" height="10" rx="5" fill="#C99361" opacity="0.7"/>`;
-    // Soil texture dots
-    let dots = '';
-    for (let i = 0; i < 18; i++) {
-      const dx = bed.x + 8 + Math.random() * (bed.w - 16);
-      const dy = bed.y - bed.h + 6 + Math.random() * (bed.h + 22);
-      dots += `<circle cx="${dx.toFixed(0)}" cy="${dy.toFixed(0)}" r="${(1 + Math.random() * 1.6).toFixed(1)}" fill="#5E3C22" opacity="0.35"/>`;
-    }
-    s += dots;
-    // Plant flowers
-    const n = bed.list.length;
-    bed.list.forEach((f, i) => {
-      const cx = bed.x + bed.w * ((i + 0.5) / n);
-      const baseY = bed.y - bed.h + 9;
-      if (f.w) {
-        s += plantedFlowerG(cx, baseY, 0, bed.s, true, i);
-      } else {
-        s += plantedFlowerG(cx, baseY, f.p, bed.s, false, f.c);
-      }
+  // Soil dots
+  for (let i = 0; i < 20; i++) {
+    const dx = bedX + 10 + Math.random() * (bedW - 20);
+    const dy = bedY - bedH + 8 + Math.random() * (bedH + 30);
+    s += `<circle cx="${dx.toFixed(0)}" cy="${dy.toFixed(0)}" r="${(1 + Math.random() * 1.5).toFixed(1)}" fill="#5E3C22" opacity="0.3"/>`;
+  }
+
+  if (flowers.length === 0) {
+    // Empty garden message
+    s += `<text x="${W / 2}" y="${bedY - 10}" text-anchor="middle" font-size="14" font-family="'Noto Sans TC', sans-serif" fill="#8A5E38">🌱 完成課程來種下你的第一朵花</text>`;
+  } else {
+    // Plant user's flowers evenly spaced in the bed
+    const n = flowers.length;
+    const scale = n <= 2 ? 1.3 : n <= 4 ? 1.1 : 0.9;
+    flowers.forEach((flower, i) => {
+      const cx = bedX + bedW * ((i + 0.5) / n);
+      const baseY = bedY - bedH + 12;
+      s += plantedFlowerG(cx, baseY, flower.petals, scale, false, flower.colorIndex);
     });
-  });
+  }
 
   // Foreground grass tufts
   const tuft = (x, y, k) =>
     `<g stroke="#4E9558" stroke-width="${2.4 * k}" stroke-linecap="round" fill="none"><path d="M${x} ${y} q -3 -${9 * k} -6 -${13 * k}"/><path d="M${x} ${y} q 0 -${11 * k} 0 -${15 * k}"/><path d="M${x} ${y} q 3 -${9 * k} 6 -${13 * k}"/></g>`;
-  s += tuft(20, 466, 1.1) + tuft(120, 468, 0.9) + tuft(300, 466, 1.0) + tuft(370, 464, 0.8);
+  s += tuft(20, 410, 1.0) + tuft(130, 412, 0.9) + tuft(300, 410, 1.0) + tuft(370, 408, 0.8);
 
   s += `</svg>`;
   return s;
