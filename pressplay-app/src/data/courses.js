@@ -155,14 +155,19 @@ const courses = [
       { id: 'fin-14', title: '理財第 14 課：延伸學習 - 中央銀行', youtubeId: 'r5AFdeAZffI', topic: '中央銀行 貨幣政策 利率 通貨膨脹' },
     ],
   },
-]
+].map(course => ({
+  ...course,
+  lecturer: ['earth-science-khan', 'microeconomics'].includes(course.id)
+    ? 'Khan Academy'
+    : '均一教育',
+}))
 
 export default courses
 
 // Helper: get all episodes as flat list
 export function getAllEpisodes() {
   return courses.flatMap(course =>
-    course.episodes.map(ep => ({ ...ep, courseId: course.id, courseTitle: course.title, courseIcon: course.icon, courseColor: course.color }))
+    course.episodes.map(ep => ({ ...ep, courseId: course.id, courseTitle: course.title, courseIcon: course.icon, courseColor: course.color, courseLecturer: course.lecturer }))
   )
 }
 
@@ -170,7 +175,7 @@ export function getAllEpisodes() {
 export function findEpisode(episodeId) {
   for (const course of courses) {
     const ep = course.episodes.find(e => e.id === episodeId)
-    if (ep) return { ...ep, courseId: course.id, courseTitle: course.title, courseIcon: course.icon, courseColor: course.color }
+    if (ep) return { ...ep, courseId: course.id, courseTitle: course.title, courseIcon: course.icon, courseColor: course.color, courseLecturer: course.lecturer }
   }
   return null
 }

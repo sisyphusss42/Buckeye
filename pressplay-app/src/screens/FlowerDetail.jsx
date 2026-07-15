@@ -34,7 +34,8 @@ export default function FlowerDetail() {
           <div style={{ position: 'absolute', top: 10, right: '30%', fontSize: 14 }}>✨</div>
         </div>
         <div className="text-caption" style={{ color: 'var(--green)' }}>{courseTitle} · {stage >= 2 ? '已掌握' : '學習中'}</div>
-        <h2 className="text-h2" style={{ margin: '4px 0 8px' }}>{title}</h2>
+        <h2 className="text-h2" style={{ margin: '4px 0' }}>{title}</h2>
+        <div className="text-small" style={{ marginBottom: 8 }}>講師：{episode?.courseLecturer}</div>
 
         {/* Familiarity */}
         <div className="card mb-16" style={{ background: 'var(--gray-100)' }}>

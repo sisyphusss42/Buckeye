@@ -55,6 +55,7 @@ export default function Home() {
                 <div className="flex-1">
                   <div className="text-body" style={{ fontWeight: 600 }}>{course.title}</div>
                   <div className="text-caption">{course.subtitle}</div>
+                  <div className="text-small mt-4">講師：{course.lecturer}</div>
                   <div className="progress-bar mt-8" style={{ height: 4 }}>
                     <div className="fill" style={{ width: `${(courseCompleted / course.episodes.length) * 100}%`, background: course.color, height: '100%', borderRadius: 'var(--r-full)' }} />
                   </div>
