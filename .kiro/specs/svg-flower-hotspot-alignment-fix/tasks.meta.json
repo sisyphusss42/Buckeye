@@ -1,0 +1,113 @@
+{
+  "pbtResults": {
+    "1. Write the bug condition exploration property test": {
+      "status": "passed",
+      "lastRunTimestamp": 1784123675707
+    },
+    "2. Write preservation property and focused regression tests before the fix": {
+      "status": "passed",
+      "lastRunTimestamp": 1784123864544
+    },
+    "3.3 Verify the original bug condition exploration test now passes": {
+      "status": "failed",
+      "failingExample": "FAIL src/screens/Garden.bug-condition.test.jsx > Property 1: Responsive Flower Target Alignment and Selection > preserves exact videoId identity when an existing legacy hotspot receives the click\nAssertionError: expected [] to have a length of 2 but got +0\n- Expected\n+ Received\n- 2\n+ 0\nat src/screens/Garden.bug-condition.test.jsx:284:28",
+      "lastRunTimestamp": 1784123949525
+    }
+  },
+  "executionHistory": {
+    "1. Write the bug condition exploration property test": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645061
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122672257
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123202223
+      }
+    ],
+    "2. Write preservation property and focused regression tests before the fix": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645110
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123233027
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123529004
+      }
+    ],
+    "3.1 Emit flower interaction targets in SVG user space": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645144
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123553484
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123726624
+      }
+    ],
+    "3.2 Delegate validated target navigation from the SVG host": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645169
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123745253
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123902330
+      }
+    ],
+    "3.3 Verify the original bug condition exploration test now passes": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645195
+      },
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784123914184
+      }
+    ],
+    "3.4 Verify the preservation property tests still pass": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645225
+      }
+    ],
+    "4. Checkpoint - run all validation once without watch mode": [
+      {
+        "executionId": "6e167fbd-1d30-4797-a1fd-8ec20626450e",
+        "chatSessionId": "sess_f84d352f-f36e-4610-958b-5213b1cd48ce",
+        "timestamp": 1784122645258
+      }
+    ]
+  }
+}

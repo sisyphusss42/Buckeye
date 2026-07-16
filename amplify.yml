@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --prefix pressplay-app
+    build:
+      commands:
+        - npm run build --prefix pressplay-app
+  artifacts:
+    baseDirectory: pressplay-app/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - pressplay-app/node_modules/**/*

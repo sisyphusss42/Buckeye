@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PressPlay garden page visual mockup">
+  <title>PressPlay 花園</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="phone" aria-label="PressPlay 花園頁面視覺稿">
+    <section class="garden" aria-label="花園景觀">
+      <svg class="garden-art" viewBox="0 0 420 734" role="img" aria-labelledby="garden-title garden-description" preserveAspectRatio="xMidYMid slice">
+        <title id="garden-title">PressPlay 學習花園</title>
+        <desc id="garden-description">藍天下的綠色花園中，課程花朵與幼苗散落在土地上。</desc>
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#dcefff"/>
+            <stop offset="1" stop-color="#eef8e9"/>
+          </linearGradient>
+          <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#94d48a"/>
+            <stop offset="1" stop-color="#6ec26e"/>
+          </linearGradient>
+          <radialGradient id="sun" cx="42%" cy="38%" r="60%">
+            <stop offset="0" stop-color="#ffe79b"/>
+            <stop offset="1" stop-color="#f7c94f"/>
+          </radialGradient>
+          <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="180%">
+            <feGaussianBlur stdDeviation="1.2"/>
+          </filter>
+
+          <g id="plot">
+            <ellipse cy="4" rx="17" ry="7" fill="#6d643f" opacity=".26"/>
+            <ellipse rx="14" ry="5" fill="#9c8054" opacity=".22"/>
+          </g>
+          <g id="sprout">
+            <use href="#plot"/>
+            <path d="M0 0C0-8-1-14 0-21" fill="none" stroke="#539f62" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="-7" cy="-15" rx="7" ry="3.8" fill="#5aaa68" transform="rotate(24 -7 -15)"/>
+            <ellipse cx="7" cy="-21" rx="7" ry="3.8" fill="#66b875" transform="rotate(-25 7 -21)"/>
+            <path d="M-10-16Q-7-18-3-16M4-22Q7-24 10-22" fill="none" stroke="#91d09a" stroke-width="1" opacity=".7"/>
+          </g>
+          <g id="flower-pink">
+            <use href="#plot"/>
+            <path d="M0 0Q-2-16 0-29" fill="none" stroke="#559e5f" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="-7" cy="-13" rx="7" ry="3.2" fill="#67b873" transform="rotate(-25 -7 -13)"/>
+            <g fill="#ed7e9e">
+              <ellipse cy="-40" rx="5" ry="8"/><ellipse cx="9" cy="-33" rx="5" ry="8" transform="rotate(72 9 -33)"/>
+              <ellipse cx="6" cy="-22" rx="5" ry="8" transform="rotate(144 6 -22)"/><ellipse cx="-6" cy="-22" rx="5" ry="8" transform="rotate(216 -6 -22)"/>
+              <ellipse cx="-9" cy="-33" rx="5" ry="8" transform="rotate(288 -9 -33)"/>
+            </g>
+            <circle cy="-31" r="5" fill="#f4c74e"/>
+          </g>
+          <g id="flower-yellow">
+            <use href="#plot"/>
+            <path d="M0 0Q-2-16 0-29" fill="none" stroke="#559e5f" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="-7" cy="-13" rx="7" ry="3.2" fill="#67b873" transform="rotate(-25 -7 -13)"/>
+            <g fill="#f5bd4c">
+              <ellipse cy="-40" rx="5" ry="8"/><ellipse cx="9" cy="-33" rx="5" ry="8" transform="rotate(72 9 -33)"/>
+              <ellipse cx="6" cy="-22" rx="5" ry="8" transform="rotate(144 6 -22)"/><ellipse cx="-6" cy="-22" rx="5" ry="8" transform="rotate(216 -6 -22)"/>
+              <ellipse cx="-9" cy="-33" rx="5" ry="8" transform="rotate(288 -9 -33)"/>
+            </g>
+            <circle cy="-31" r="5" fill="#e99e35"/>
+          </g>
+          <g id="flower-purple">
+            <use href="#plot"/>
+            <path d="M0 0Q-2-16 0-29" fill="none" stroke="#559e5f" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="-7" cy="-13" rx="7" ry="3.2" fill="#67b873" transform="rotate(-25 -7 -13)"/>
+            <g fill="#9c67ed">
+              <ellipse cy="-40" rx="5" ry="8"/><ellipse cx="9" cy="-33" rx="5" ry="8" transform="rotate(72 9 -33)"/>
+              <ellipse cx="6" cy="-22" rx="5" ry="8" transform="rotate(144 6 -22)"/><ellipse cx="-6" cy="-22" rx="5" ry="8" transform="rotate(216 -6 -22)"/>
+              <ellipse cx="-9" cy="-33" rx="5" ry="8" transform="rotate(288 -9 -33)"/>
+            </g>
+            <circle cy="-31" r="5" fill="#f1c944"/>
+          </g>
+          <g id="flower-blue">
+            <use href="#plot"/>
+            <path d="M0 0Q-2-16 0-29" fill="none" stroke="#559e5f" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="-7" cy="-13" rx="7" ry="3.2" fill="#67b873" transform="rotate(-25 -7 -13)"/>
+            <g fill="#699cff">
+              <ellipse cy="-40" rx="5" ry="8"/><ellipse cx="9" cy="-33" rx="5" ry="8" transform="rotate(72 9 -33)"/>
+              <ellipse cx="6" cy="-22" rx="5" ry="8" transform="rotate(144 6 -22)"/><ellipse cx="-6" cy="-22" rx="5" ry="8" transform="rotate(216 -6 -22)"/>
+              <ellipse cx="-9" cy="-33" rx="5" ry="8" transform="rotate(288 -9 -33)"/>
+            </g>
+            <circle cy="-31" r="5" fill="#f1c944"/>
+          </g>
+        </defs>
+
+        <rect width="420" height="170" fill="url(#sky)"/>
+        <circle cx="348" cy="43" r="44" fill="#ffe79b" opacity=".35"/>
+        <circle cx="348" cy="43" r="28" fill="url(#sun)"/>
+        <g fill="#fff" opacity=".93">
+          <circle cx="64" cy="43" r="14"/><circle cx="81" cy="46" r="17"/><circle cx="99" cy="43" r="12"/><rect x="51" y="43" width="59" height="15" rx="8"/>
+          <circle cx="204" cy="31" r="10"/><circle cx="218" cy="33" r="12"/><circle cx="232" cy="31" r="9"/><rect x="196" y="31" width="45" height="11" rx="6"/>
+          <circle cx="327" cy="55" r="9"/><circle cx="339" cy="57" r="11"/><circle cx="352" cy="55" r="8"/><rect x="320" y="55" width="41" height="10" rx="5"/>
+        </g>
+        <path d="M0 143Q105 108 224 137T420 122V180H0Z" fill="#b2e39b"/>
+        <path d="M0 160Q130 129 258 151T420 143V192H0Z" fill="#98d887"/>
+        <rect y="151" width="420" height="583" fill="url(#grass)"/>
+
+        <g aria-hidden="true">
+          <rect y="190" width="420" height="5" rx="2.5" fill="#f1e4cb"/>
+          <rect y="207" width="420" height="5" rx="2.5" fill="#ead8b8"/>
+          <g fill="#fff3dd" stroke="#e5d2ae" stroke-width="1.5">
+            <path d="M6 215V183l8-10 8 10v32Z"/><path d="M43 215V183l8-10 8 10v32Z"/><path d="M80 215V183l8-10 8 10v32Z"/>
+            <path d="M117 215V183l8-10 8 10v32Z"/><path d="M154 215V183l8-10 8 10v32Z"/><path d="M191 215V183l8-10 8 10v32Z"/>
+            <path d="M228 215V183l8-10 8 10v32Z"/><path d="M265 215V183l8-10 8 10v32Z"/><path d="M302 215V183l8-10 8 10v32Z"/>
+            <path d="M339 215V183l8-10 8 10v32Z"/><path d="M376 215V183l8-10 8 10v32Z"/><path d="M413 215V183l8-10 8 10v32Z"/>
+          </g>
+          <rect y="190" width="420" height="4" rx="2" fill="#fff" opacity=".58"/>
+        </g>
+
+        <g aria-hidden="true">
+          <use href="#flower-pink" transform="translate(48 234) scale(.78)"/><use href="#flower-yellow" transform="translate(128 231) scale(.78)"/>
+          <use href="#flower-purple" transform="translate(209 237) scale(.82)"/><use href="#flower-yellow" transform="translate(291 234) scale(.8)"/><use href="#plot" transform="translate(372 242)"/>
+
+          <use href="#plot" transform="translate(31 286)"/><use href="#sprout" transform="translate(91 291) scale(.76)"/><use href="#plot" transform="translate(166 282)"/>
+          <use href="#plot" transform="translate(242 288)"/><use href="#plot" transform="translate(317 284)"/><use href="#flower-purple" transform="translate(393 290) scale(.79)"/>
+
+          <use href="#plot" transform="translate(53 334)"/><use href="#flower-yellow" transform="translate(123 339) scale(.56)"/><use href="#flower-pink" transform="translate(194 332) scale(.73)"/>
+          <use href="#sprout" transform="translate(269 337) scale(.7)"/><use href="#plot" transform="translate(346 332)"/><use href="#flower-purple" transform="translate(405 340) scale(.78)"/>
+
+          <use href="#flower-blue" transform="translate(37 385) scale(.67)"/><use href="#flower-blue" transform="translate(101 390) scale(.72)"/>
+          <use href="#flower-yellow" transform="translate(178 384) scale(.86)"/><use href="#sprout" transform="translate(251 392) scale(.76)"/>
+          <use href="#flower-yellow" transform="translate(326 388) scale(.53)"/><use href="#plot" transform="translate(399 390)"/>
+
+          <use href="#plot" transform="translate(59 434)"/><use href="#flower-yellow" transform="translate(133 431) scale(.53)"/>
+          <use href="#flower-yellow" transform="translate(208 438) scale(.78)"/><use href="#sprout" transform="translate(285 434) scale(.79)"/><use href="#sprout" transform="translate(365 437) scale(.72)"/>
+
+          <use href="#plot" transform="translate(31 483)"/><use href="#plot" transform="translate(102 489)"/><use href="#sprout" transform="translate(171 482) scale(.75)"/>
+          <use href="#sprout" transform="translate(247 488) scale(.75)"/><use href="#sprout" transform="translate(322 484) scale(.76)"/><use href="#plot" transform="translate(394 489)"/>
+
+          <use href="#flower-yellow" transform="translate(54 535) scale(.72)"/><use href="#plot" transform="translate(129 538)"/>
+          <use href="#flower-pink" transform="translate(204 532) scale(.82)"/><use href="#plot" transform="translate(281 537)"/><use href="#flower-purple" transform="translate(361 534) scale(.65)"/>
+
+          <use href="#sprout" transform="translate(36 583) scale(.69)"/><use href="#flower-pink" transform="translate(107 588) scale(.72)"/>
+          <use href="#plot" transform="translate(183 582)"/><use href="#plot" transform="translate(258 589)"/><use href="#flower-pink" transform="translate(333 580) scale(.78)"/><use href="#sprout" transform="translate(406 588) scale(.7)"/>
+
+          <use href="#flower-yellow" transform="translate(60 632) scale(.87)"/><use href="#plot" transform="translate(140 631)"/>
+          <use href="#plot" transform="translate(220 638)"/><use href="#plot" transform="translate(299 630)"/><use href="#plot" transform="translate(382 640)"/>
+        </g>
+
+        <g stroke="#3d8d50" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".9" aria-hidden="true">
+          <path d="M22 706q-4-12-8-17M22 706q0-13 1-19M22 706q5-11 9-16"/>
+          <path d="M140 711q-4-10-8-14M140 711q0-11 0-16M140 711q5-9 9-13"/>
+          <path d="M281 707q-5-12-9-17M281 707q0-13 0-19M281 707q5-11 9-16"/>
+          <path d="M393 705q-4-10-7-14M393 705q0-11 0-16M393 705q4-9 8-13"/>
+        </g>
+      </svg>
+
+      <div class="ai-companion" role="img" aria-label="AI 農夫夥伴揮手提醒你">
+        <span class="companion-alert" aria-hidden="true">你還記得什麼是ETF嗎?</span>
+        <svg class="companion-character" viewBox="0 0 136 162" aria-hidden="true">
+          <defs>
+            <linearGradient id="farmer-hat" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f9d574"/>
+              <stop offset="1" stop-color="#d99f35"/>
+            </linearGradient>
+            <linearGradient id="farmer-overalls" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#77baf2"/>
+              <stop offset="1" stop-color="#397fbe"/>
+            </linearGradient>
+            <filter id="farmer-shadow" x="-30%" y="-30%" width="160%" height="180%">
+              <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#326b3b" flood-opacity=".28"/>
+            </filter>
+          </defs>
+
+          <ellipse cx="65" cy="153" rx="39" ry="7" fill="#326b3b" opacity=".22"/>
+          <g filter="url(#farmer-shadow)">
+            <g class="farmer-arm farmer-arm-back">
+              <path d="M39 101Q25 109 22 124" fill="none" stroke="#f2b78f" stroke-width="13" stroke-linecap="round"/>
+              <circle cx="21" cy="128" r="7" fill="#f2b78f"/>
+            </g>
+
+            <path d="M45 96Q62 88 80 96L87 137H38Z" fill="#f8f1d7"/>
+            <path d="M43 105H82L86 139H38Z" fill="url(#farmer-overalls)"/>
+            <path d="M44 104L51 95M79 104L73 95" fill="none" stroke="#397fbe" stroke-width="5" stroke-linecap="round"/>
+            <rect x="52" y="111" width="18" height="14" rx="3" fill="#b8dcf8" stroke="#2e72ae" stroke-width="2"/>
+            <path d="M58 116l4-4 4 4-4 5Z" fill="#f9d35e"/>
+            <circle cx="46" cy="106" r="2.5" fill="#f5d25d"/><circle cx="78" cy="106" r="2.5" fill="#f5d25d"/>
+
+            <path d="M45 137L42 150" fill="none" stroke="#264f75" stroke-width="12" stroke-linecap="round"/>
+            <path d="M78 137L81 150" fill="none" stroke="#264f75" stroke-width="12" stroke-linecap="round"/>
+            <path d="M34 151Q43 145 51 151V156H34Z" fill="#70482e"/>
+            <path d="M73 151Q81 145 90 151V156H73Z" fill="#70482e"/>
+
+            <circle cx="62" cy="72" r="30" fill="#f4bd95"/>
+            <path d="M35 69Q34 47 61 41Q90 46 90 69L83 58Q61 65 40 57Z" fill="#6e4932"/>
+            <ellipse cx="62" cy="50" rx="40" ry="8.5" fill="#d79c33"/>
+            <path d="M34 50Q38 22 62 20Q87 22 91 50Z" fill="url(#farmer-hat)"/>
+            <path d="M36 43Q62 50 89 43L91 52Q62 58 34 52Z" fill="#5faf6a"/>
+            <path d="M47 66q4-4 8 0M69 66q4-4 8 0" fill="none" stroke="#51392d" stroke-width="2.7" stroke-linecap="round"/>
+            <circle cx="51" cy="72" r="2.3" fill="#51392d"/><circle cx="74" cy="72" r="2.3" fill="#51392d"/>
+            <ellipse cx="42" cy="80" rx="5" ry="3" fill="#ed8d83" opacity=".48"/>
+            <ellipse cx="83" cy="80" rx="5" ry="3" fill="#ed8d83" opacity=".48"/>
+            <path d="M56 83Q63 89 70 83" fill="none" stroke="#8f4f43" stroke-width="2.7" stroke-linecap="round"/>
+
+            <g class="farmer-arm farmer-arm-wave">
+              <path d="M83 104Q100 108 112 101Q121 96 125 91" fill="none" stroke="#f2b78f" stroke-width="9" stroke-linecap="round"/>
+              <ellipse cx="128" cy="85" rx="7" ry="7.5" fill="#f2b78f"/>
+              <path d="M123 82l-6-5M125 79l-3-9M128 78V68M131 79l3-9M133 82l3-5" fill="none" stroke="#f2b78f" stroke-width="2.7" stroke-linecap="round"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="reminder-area" aria-label="澆水提醒">
+      <div class="reminder-card">
+        <span class="water-drop" aria-hidden="true"></span>
+        <div class="reminder-copy">
+          <strong>3 朵花需要澆水</strong>
+          <span>點擊開始今日複習</span>
+        </div>
+        <span class="review-pill">複習</span>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="主選單">
+      <div class="nav-item"><span class="nav-icon">🏠</span><span>首頁</span></div>
+      <div class="nav-item active"><span class="nav-icon">🌸</span><span>花園</span></div>
+      <div class="nav-item"><span class="nav-icon">🌲</span><span>森林</span></div>
+      <div class="nav-item"><span class="nav-icon">🤝</span><span>夥伴</span></div>
+      <div class="nav-item"><span class="nav-icon">🏆</span><span>排行</span></div>
+      <div class="nav-item"><span class="nav-icon">👤</span><span>我的</span></div>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/* PressPlay Academy · Design System v1.0 */
+:root {
+  --green: #5FAF6A;
+  --green-light: #E8F5E9;
+  --yellow: #F6C453;
+  --yellow-light: #FFF8E1;
+  --pink: #F08DAA;
+  --pink-light: #FCE4EC;
+  --blue: #6FA8FF;
+  --blue-light: #E3F2FD;
+  --purple: #B38AF5;
+  --purple-light: #F3E5F5;
+  --bg: #FFFDF8;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --danger: #F44336;
+  --text: #202124;
+  --text-secondary: #5F6368;
+  --text-tertiary: #9AA0A6;
+  --white: #FFFFFF;
+  --gray-100: #F8F9FA;
+  --gray-200: #E8EAED;
+  --gray-300: #DADCE0;
+  --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px;
+  --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-48: 48px;
+  --r-12: 12px; --r-16: 16px; --r-20: 20px; --r-24: 24px; --r-full: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+  --font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body, #root {
+  font-family: var(--font);
+  font-size: 16px;
+  color: var(--text);
+  background: #f0f0f0;
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
