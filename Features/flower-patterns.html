@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PressPlay Academy · AI 生成設計</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PRESSPLAY ACADEMY — DESIGN TOKENS（沿用既有設計系統）
+   ============================================================ */
+:root{
+  --green:#5FAF6A; --green-d:#4E9558; --green-l:#E7F3E9;
+  --yellow:#F6C453; --yellow-l:#FDF3D8;
+  --pink:#F08DAA; --pink-l:#FCE6ED;
+  --blue:#6FA8FF; --blue-l:#E6F0FF;
+  --purple:#B38AF5; --purple-l:#F0E9FE;
+  --bg:#FFFDF8; --card:#FFFFFF; --border:#ECECEC;
+  --ink:#202124; --ink-2:#70757A; --ink-3:#A6ABB0;
+  --r-s:12px; --r-m:16px; --r-l:20px; --r-xl:24px; --r-pill:999px;
+  --sh-1:0 2px 8px rgba(95,124,90,.06);
+  --sh-2:0 6px 20px rgba(95,124,90,.10);
+  --sh-3:0 14px 40px rgba(95,124,90,.14);
+  --sh-press:0 1px 3px rgba(95,124,90,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -5%, #F2F9EE 0%, transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, #FDF3E4 0%, transparent 50%),
+    var(--bg);
+  color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.5; min-height:100vh;
+}
+h1,h2,h3,h4,p{margin:0}
+.t-h1{font-size:28px;font-weight:900;letter-spacing:-.02em}
+.t-title{font-size:18px;font-weight:700}
+.t-cap{font-size:13px;font-weight:500}
+.t-sm{font-size:12px;font-weight:500}
+.muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+
+/* ---------- 按鈕／卡片／進度條（沿用設計系統） ---------- */
+.btn{border:none;font-family:inherit;font-weight:700;cursor:pointer;border-radius:var(--r-pill);
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.16s;
+  font-size:14px;padding:12px 20px;box-shadow:var(--sh-1)}
+.btn:active{transform:translateY(1px) scale(.98);box-shadow:var(--sh-press)}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 6px 16px rgba(95,175,106,.35)}
+.btn-primary:hover{background:var(--green-d)}
+.btn-ghost{background:var(--purple-l);color:#7d4fd1;box-shadow:none}
+.btn-outline{background:#fff;color:var(--ink-2);border:1.5px solid var(--border);box-shadow:none}
+.btn-sm{padding:9px 15px;font-size:13px}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill)}
+.tag-blue{background:var(--blue-l);color:#3f74c9}
+.tag-purple{background:var(--purple-l);color:#7d4fd1}
+.card-soft{background:var(--card);border-radius:var(--r-l);box-shadow:var(--sh-2);padding:18px}
+.panel{background:rgba(255,255,255,.8);backdrop-filter:blur(16px);border:1px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--sh-2);padding:24px}
+.bar{height:10px;border-radius:var(--r-pill);background:#EEF1EC;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:var(--r-pill);transition:width .6s cubic-bezier(.22,.9,.35,1);
+  background:linear-gradient(90deg,var(--purple),var(--blue))}
+
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.sway{animation:sway 4s ease-in-out infinite;transform-origin:bottom center}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes spin-slow{to{transform:rotate(360deg)}}
+@keyframes popIn{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+
+/* ============================================================
+   本頁專屬樣式
+   ============================================================ */
+.wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px}
+.masthead{text-align:center;margin-bottom:28px}
+.masthead h1{font-size:28px;font-weight:900;letter-spacing:-.02em}
+.masthead p{color:var(--ink-2);margin-top:10px;font-size:14px;line-height:1.7}
+
+/* -- 分類選擇 -- */
+.pipe-course-select{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+
+/* -- AI 生成流程 -- */
+.pipeline{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:2px 2px 6px}
+.pipe-step{flex:1;min-width:170px;background:#fff;border:1px solid var(--border);border-radius:var(--r-l);
+  padding:16px;box-shadow:var(--sh-1)}
+.pipe-arrow{flex-shrink:0;width:40px;display:flex;align-items:center;justify-content:center;color:var(--ink-3)}
+.pipe-arrow svg{width:30px;height:14px}
+.pipe-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+
+/* -- 進化展示區 -- */
+.evolve-panel{margin-top:24px;text-align:center}
+.flower-stage-name{font-weight:800;font-size:16px}
+.flower-preview{position:relative;height:150px;display:flex;align-items:center;justify-content:center;margin:12px 0}
+.sparkle{position:absolute;font-size:14px;animation:twinkle 1.8s ease-in-out infinite;pointer-events:none}
+.legendary-ring{position:absolute;inset:18px;border-radius:50%;border:2px dashed rgba(179,138,245,.5);
+  animation:spin-slow 8s linear infinite;pointer-events:none}
+.stage-golden .flower-preview{filter:drop-shadow(0 0 14px rgba(246,196,83,.6))}
+.stage-crystal .flower-preview{filter:drop-shadow(0 0 16px rgba(111,168,255,.6))}
+.stage-legendary .flower-preview{filter:drop-shadow(0 0 20px rgba(179,138,245,.65))}
+.q-progress-row{display:flex;justify-content:center;gap:16px;margin:16px 0 6px;flex-wrap:wrap}
+
+/* -- 提示訊息 -- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);z-index:998;background:var(--ink);
+  color:#fff;padding:12px 20px;border-radius:var(--r-pill);font-size:13px;font-weight:700;box-shadow:var(--sh-3);
+  opacity:0;transition:.3s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <h1>🤖 AI 生成設計</h1>
+    <p>AI 會依照課程內容，為每個分類生成獨一無二的花朵樣式；<br>每回答 50 題，花朵就會進化成不同的樣式</p>
+  </div>
+
+  <div class="pipe-course-select" id="pipeSelect"></div>
+
+  <div class="panel">
+    <div class="pipeline" id="pipeline"></div>
+  </div>
+
+  <div class="panel evolve-panel" id="evolvePanel">
+    <div class="t-cap muted" style="font-weight:700;margin-bottom:2px">目前樣式</div>
+    <div class="flower-stage-name" id="stageLabel">普通</div>
+    <div class="flower-preview" id="flowerPreview"></div>
+
+    <div class="bar" style="max-width:320px;margin:0 auto"><i id="qBarFill" style="width:0%"></i></div>
+    <div class="q-progress-row">
+      <span class="t-sm muted">已回答 <b id="qProgress">0</b> / 50 題</span>
+    </div>
+
+    <div class="row" style="justify-content:center;gap:10px;margin-top:8px;flex-wrap:wrap">
+      <button class="btn btn-outline" id="answerOneBtn">➕ 回答一題</button>
+      <button class="btn btn-ghost" id="answer50Btn">✨ 模擬回答 50 題（示範）</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   一、資料設定 — 八大分類，各自擁有獨立花形與配色
+   ============================================================ */
+// 每個「全站分類」都有自己專屬的花瓣形狀與配色，八個分類、八種完全不同
+// 的花形——這就是「AI 依課程內容生成專屬花朵樣式」的核心概念。
+const THEMES = {
+  invest:    {label:'投資理財', emoji:'📈', shape:'coin',   color1:'#F6C453', color2:'#E8A93B', center:'#4E9558',
+              keywords:['ETF','股票','複利','風險'], course:'投資學基礎',
+              styleWords:['金幣堆疊花瓣','股價曲線葉','金色光暈']},
+  language:  {label:'語言學習', emoji:'🌏', shape:'speech', color1:'#6FA8FF', color2:'#A9C9FF', center:'#3f74c9',
+              keywords:['單字','文法','口說','聽力'], course:'職場英文簡報術',
+              styleWords:['對話泡泡花瓣','書本葉片','飄浮字母']},
+  baking:    {label:'烘焙料理', emoji:'🧁', shape:'swirl',  color1:'#FDF3D8', color2:'#F6C453', center:'#9a7400',
+              keywords:['發酵','溫控','調味','擺盤'], course:'零基礎甜點烘焙課',
+              styleWords:['奶油擠花花瓣','焦糖光暈','麵粉葉片']},
+  fitness:   {label:'健康健身', emoji:'🚴', shape:'bolt',   color1:'#F08DAA', color2:'#F6C453', center:'#c14e73',
+              keywords:['心率','肌力','伸展','恢復'], course:'居家增肌訓練計畫',
+              styleWords:['閃電花瓣','活力光暈','肌肉紋理葉']},
+  lifestyle: {label:'生活品味', emoji:'🍸', shape:'drop',   color1:'#B38AF5', color2:'#D9C4FA', center:'#7d4fd1',
+              keywords:['香氣','萃取','溫度','風味'], course:'手沖咖啡風味入門',
+              styleWords:['水滴花瓣','咖啡漸層','香氣光暈']},
+  career:    {label:'職場技能', emoji:'💼', shape:'shield', color1:'#7BC98A', color2:'#5FAF6A', center:'#2f8f3d',
+              keywords:['溝通','領導','效率','決策'], course:'高效時間管理系統',
+              styleWords:['盾牌花瓣','專業光澤','穩重葉脈']},
+  marketing: {label:'行銷',     emoji:'📣', shape:'flare',  color1:'#8AC0E8', color2:'#6FA8FF', center:'#3f74c9',
+              keywords:['品牌','社群','文案','轉換率'], course:'品牌文案寫作術',
+              styleWords:['擴散光束花瓣','社群葉脈','漸層光暈']},
+  arts:      {label:'藝文娛樂', emoji:'🎨', shape:'brush',  color1:'#F5A6C0', color2:'#F08DAA', center:'#c14e73',
+              keywords:['創作','美感','敘事','靈感'], course:'冷知識說書人養成班',
+              styleWords:['畫筆筆觸花瓣','繽紛色彩','靈感光點']},
+};
+
+// 每回答滿 50 題，花朵就往下一個樣式進化；每個分類各自累積自己的進度，
+// 互不影響。
+const QUESTIONS_PER_STAGE = 50;
+const STAGES = ['normal', 'golden', 'crystal', 'legendary'];
+const STAGE_LABEL = {normal:'普通', golden:'黃金', crystal:'水晶', legendary:'傳說'};
+const LEGENDARY_COLORS = ['#F08DAA','#F6C453','#6FA8FF','#B38AF5','#7BC98A'];
+
+let currentTheme = 'invest';
+let progress = {}; // { [themeKey]: {answered: 0, stageIndex: 0} }
+Object.keys(THEMES).forEach(k => { progress[k] = {answered: 0, stageIndex: 0}; });
+
+/* ============================================================
+   二、花瓣形狀產生器 — 八種分類、八種完全不同的輪廓
+   ============================================================ */
+function petalPath(shape, cx, cy, rot, pr){
+  const t = `rotate(${rot} ${cx} ${cy})`;
+  switch(shape){
+    case 'coin': // 投資理財：一疊圓形金幣
+      return `<g transform="${t}">
+        <circle cx="${cx}" cy="${cy-pr*0.15}" r="${pr*0.62}"/>
+        <circle cx="${cx}" cy="${cy-pr*0.55}" r="${pr*0.62}" opacity="0.85"/>
+      </g>`;
+    case 'speech': // 語言學習：對話泡泡
+      return `<g transform="${t}">
+        <rect x="${cx-pr*0.7}" y="${cy-pr*1.55}" width="${pr*1.4}" height="${pr*1.05}" rx="${pr*0.4}"/>
+        <polygon points="${cx-pr*0.18},${cy-pr*0.5} ${cx+pr*0.18},${cy-pr*0.5} ${cx},${cy-pr*0.12}"/>
+      </g>`;
+    case 'swirl': // 烘焙料理：奶油擠花的漩渦
+      return `<path d="M ${cx} ${cy-pr*1.65}
+        C ${cx+pr*1.0} ${cy-pr*1.3} ${cx+pr*0.9} ${cy-pr*0.25} ${cx} ${cy}
+        C ${cx-pr*0.9} ${cy-pr*0.25} ${cx-pr*1.0} ${cy-pr*1.3} ${cx} ${cy-pr*1.65} Z" transform="${t}"/>`;
+    case 'bolt': // 健康健身：閃電般的動感線條
+      return `<polygon points="${cx-pr*0.12},${cy-pr*1.65} ${cx+pr*0.38},${cy-pr*0.72} ${cx+pr*0.05},${cy-pr*0.66}
+        ${cx+pr*0.32},${cy-pr*0.02} ${cx-pr*0.42},${cy-pr*0.92} ${cx-pr*0.06},${cy-pr*0.98} Z" transform="${t}"/>`;
+    case 'drop': // 生活品味：水滴／酒杯曲線
+      return `<path d="M ${cx} ${cy-pr*1.65} Q ${cx+pr*0.88} ${cy-pr*0.5} ${cx} ${cy}
+        Q ${cx-pr*0.88} ${cy-pr*0.5} ${cx} ${cy-pr*1.65} Z" transform="${t}"/>`;
+    case 'shield': // 職場技能：盾牌／徽章
+      return `<polygon points="${cx},${cy-pr*1.62} ${cx+pr*0.62},${cy-pr*1.12} ${cx+pr*0.52},${cy-pr*0.1}
+        ${cx},${cy+pr*0.28} ${cx-pr*0.52},${cy-pr*0.1} ${cx-pr*0.62},${cy-pr*1.12} Z" transform="${t}"/>`;
+    case 'flare': // 行銷：擴散的喇叭光束
+      return `<polygon points="${cx},${cy-pr*1.72} ${cx+pr*0.52},${cy-pr*0.08} ${cx-pr*0.52},${cy-pr*0.08}" transform="${t}"/>`;
+    case 'brush': // 藝文娛樂：不對稱的畫筆筆觸
+      return `<path d="M ${cx-pr*0.5} ${cy-pr*0.05}
+        C ${cx-pr*0.6} ${cy-pr*1.0} ${cx+pr*0.05} ${cy-pr*1.7} ${cx+pr*0.55} ${cy-pr*1.45}
+        C ${cx+pr*0.35} ${cy-pr*0.85} ${cx+pr*0.5} ${cy-pr*0.15} ${cx+pr*0.12} ${cy+pr*0.05} Z" transform="${t}"/>`;
+    default:
+      return `<ellipse cx="${cx}" cy="${cy}" rx="${pr}" ry="${pr*1.45}" transform="${t}"/>`;
+  }
+}
+
+function makeAIFlower(themeKey, size, stage){
+  const theme = THEMES[themeKey];
+  const petals = 8;
+  const cx = size/2, cy = size/2, r = size*0.30, pr = size*0.15;
+  let fills;
+  if(stage === 'golden')       fills = ['#FFD700', '#F6C453'];
+  else if(stage === 'crystal') fills = ['rgba(210,235,255,.92)', 'rgba(150,200,255,.85)'];
+  else if(stage === 'legendary') fills = LEGENDARY_COLORS;
+  else fills = [theme.color1, theme.color2];
+
+  let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow:visible">`;
+  for(let i = 0; i < petals; i++){
+    const a = (i/petals) * Math.PI * 2;
+    const px = +(cx + Math.cos(a)*r).toFixed(1), py = +(cy + Math.sin(a)*r).toFixed(1);
+    const rot = +(((a*180/Math.PI)+90)%360).toFixed(1);
+    const fill = fills[i % fills.length];
+    const strokeAttr = stage === 'crystal' ? `stroke="#fff" stroke-width="1"` : '';
+    svg += `<g fill="${fill}" opacity="0.94" ${strokeAttr}>${petalPath(theme.shape, px, py, rot, pr)}</g>`;
+  }
+  const centerColor = stage === 'crystal' ? '#EAF6FF' : (stage === 'legendary' ? '#fff' : theme.center);
+  svg += `<circle cx="${cx}" cy="${cy}" r="${size*0.15}" fill="${centerColor}"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${size*0.08}" fill="${theme.color1}"/>`;
+  svg += `</svg>`;
+  return svg;
+}
+
+/* ============================================================
+   三、AI 生成流程渲染
+   ============================================================ */
+function renderPipeSelect(){
+  document.getElementById('pipeSelect').innerHTML = Object.keys(THEMES).map(k =>
+    `<button class="btn ${k===currentTheme?'btn-primary':'btn-outline'} btn-sm" data-pipe="${k}">${THEMES[k].emoji} ${THEMES[k].label}</button>`
+  ).join('');
+  document.querySelectorAll('[data-pipe]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      currentTheme = e.currentTarget.dataset.pipe;
+      renderPipeSelect();
+      renderPipeline(true);
+      renderEvolvePanel();
+    });
+  });
+}
+
+function arrowSvg(){
+  return `<svg viewBox="0 0 32 14"><path d="M0 7 H26 M20 1 L27 7 L20 13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function renderPipeline(animate){
+  const theme = THEMES[currentTheme];
+  const el = document.getElementById('pipeline');
+  el.innerHTML = `
+    <div class="pipe-step" style="${animate ? 'animation:popIn .45s ease both' : ''}">
+      <div class="t-sm muted" style="font-weight:700">課程</div>
+      <div class="t-title" style="margin-top:6px;font-size:16px">${theme.course}</div>
+      <div class="tag tag-blue" style="margin-top:8px">${theme.label}</div>
+    </div>
+    <div class="pipe-arrow">${arrowSvg()}</div>
+    <div class="pipe-step" style="${animate ? 'animation:popIn .45s ease .12s both' : ''}">
+      <div class="t-sm muted" style="font-weight:700">🤖 AI 萃取關鍵字</div>
+      <div class="pipe-chip-row">${theme.keywords.map(k => `<span class="tag tag-purple">${k}</span>`).join('')}</div>
+    </div>
+    <div class="pipe-arrow">${arrowSvg()}</div>
+    <div class="pipe-step" style="${animate ? 'animation:popIn .45s ease .24s both' : ''}">
+      <div class="t-sm muted" style="font-weight:700">🌸 AI 生成花朵樣式</div>
+      <div class="row" style="margin-top:8px;gap:12px">
+        <div style="flex-shrink:0">${makeAIFlower(currentTheme, 56, 'normal')}</div>
+        <div class="t-sm faint" style="text-align:left">${theme.styleWords.join('<br>')}</div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   四、進化展示區 — 每回答 50 題，花朵換一種樣式
+   ============================================================ */
+function renderEvolvePanel(){
+  const p = progress[currentTheme];
+  const stage = STAGES[p.stageIndex];
+  const maxed = p.stageIndex >= STAGES.length - 1;
+  const panel = document.getElementById('evolvePanel');
+  panel.className = `panel evolve-panel stage-${stage}`;
+
+  document.getElementById('stageLabel').textContent = `${STAGE_LABEL[stage]}樣式`;
+
+  const legendaryRing = stage === 'legendary' ? '<div class="legendary-ring"></div>' : '';
+  const sparkles = stage !== 'normal'
+    ? [0,1,2].map(i => `<span class="sparkle" style="left:${15+i*30}%;top:${(i%2)*65+8}%;animation-delay:${i*0.4}s">✨</span>`).join('')
+    : '';
+  document.getElementById('flowerPreview').innerHTML =
+    `${legendaryRing}${sparkles}<div class="sway">${makeAIFlower(currentTheme, 108, stage)}</div>`;
+
+  document.getElementById('qProgress').textContent = p.answered;
+  document.getElementById('qBarFill').style.width = (p.answered / QUESTIONS_PER_STAGE * 100) + '%';
+
+  const answerOneBtn = document.getElementById('answerOneBtn');
+  const answer50Btn = document.getElementById('answer50Btn');
+  answerOneBtn.disabled = maxed;
+  answer50Btn.disabled = maxed;
+  answerOneBtn.textContent = maxed ? '🏆 已是最高樣式' : '➕ 回答一題';
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function answerQuestions(n){
+  const p = progress[currentTheme];
+  if(p.stageIndex >= STAGES.length - 1) return;
+  p.answered += n;
+  if(p.answered >= QUESTIONS_PER_STAGE){
+    p.answered = 0;
+    p.stageIndex++;
+    renderEvolvePanel();
+    const newStage = STAGES[p.stageIndex];
+    const flowerEl = document.getElementById('flowerPreview');
+    flowerEl.style.animation = 'none';
+    void flowerEl.offsetWidth;
+    flowerEl.style.animation = 'popIn .6s cubic-bezier(.34,1.56,.64,1)';
+    showToast(
+      p.stageIndex === STAGES.length - 1
+        ? `🏆 ${THEMES[currentTheme].label}的花朵進化為傳說樣式！`
+        : `✨ 花朵進化為${STAGE_LABEL[newStage]}樣式！`
+    );
+  } else {
+    renderEvolvePanel();
+    showToast(`已回答 ${n} 題，累計 ${p.answered} / ${QUESTIONS_PER_STAGE} 題`);
+  }
+}
+
+document.getElementById('answerOneBtn').addEventListener('click', () => answerQuestions(1));
+document.getElementById('answer50Btn').addEventListener('click', () => answerQuestions(QUESTIONS_PER_STAGE));
+
+/* ============================================================
+   五、初始化
+   ============================================================ */
+renderPipeSelect();
+renderPipeline(false);
+renderEvolvePanel();
+</script>
+</body>
+</html>
